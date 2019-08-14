@@ -7,7 +7,7 @@
     "start": "node ./src/bin/www",
     "devstart": "babel-watch ./src/index.js",
     "build": "rm -rf dist && mkdir dist && babel src -s -d dist",
-   "test": " set NODE_ENV=test&& mocha -r @babel/register --recursive src/tests/ --exit"
+    "test": " set NODE_ENV=test&& mocha -r @babel/register --recursive src/tests/ --exit"
   },
   "author": "Andela Simulations Programme",
   "license": "MIT",
@@ -26,12 +26,9 @@
     "jsonwebtoken": "^8.3.0",
     "method-override": "^2.3.10",
     "methods": "^1.1.2",
-    "mocha": "^6.2.0",
-    "mongoose": "^5.2.2",
-    "mongoose-unique-validator": "^2.0.1",
-    "morgan": "^1.9.1",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
+    "pg": "^7.12.1",
     "request": "^2.87.0",
     "underscore": "^1.9.1"
   },
