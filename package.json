@@ -4,14 +4,19 @@
   "description": "A Social platform for the creative at heart",
   "main": "index.js",
   "scripts": {
-    "start": "node src/bin/dev",
+    "start": "npm run build && node src/bin/dev",
     "devstart": "babel-watch src/index",
     "build": "rm -rf dist && mkdir dist && babel src -s -d dist",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "set NODE_ENV=test && mocha -r @babel/register src/tests/*.js --exit"
   },
   "author": "Andela Simulations Programme",
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "express": "^4.17.1",
+    "mocha": "^6.2.0"
+  },
   "devDependencies": {
     "@babel/cli": "^7.5.5",
     "@babel/core": "^7.5.5",

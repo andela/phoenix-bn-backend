@@ -5,6 +5,7 @@
 ### Node ###
 # Logs
 .vscode
+dist
 logs
 *.log
 npm-debug.log*
