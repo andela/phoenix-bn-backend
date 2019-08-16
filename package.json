@@ -4,11 +4,8 @@
   "description": "A Social platform for the creative at heart",
   "main": "index.js",
   "scripts": {
-    "migrate": "sequelize db:migrate",
-    "start": "node ./src/bin/www",
-    "devstart": "babel-watch ./src/index.js",
-    "build": "rm -rf dist && mkdir dist && babel src -s -d dist",
-    "test": " set NODE_ENV=test&& mocha -r @babel/register --recursive src/tests/ --exit"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "migrate": "sequelize db:migrate"
   },
   "author": "Andela Simulations Programme",
   "license": "MIT",
