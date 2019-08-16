@@ -1,4 +1,4 @@
-import pg from "pg";
+import { Pool } from "pg";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -13,8 +13,6 @@ const isProduction = process.env.NODE_ENV === "production";
 const connectionString = isProduction
   ? process.env.DATABASE_URL
   : "postgres://postgres:juninho1@127.0.0.1:5432/weTravel";
-
-const { Pool } = pg;
 
 const db = new Pool({ connectionString });
 
