@@ -8,7 +8,7 @@
     "migrate": "sequelize db:migrate",
     "start": "node ./src/bin/www",
     "devstart": "babel-watch ./src/index.js",
-    "build": "rm -rf dist && mkdir dist && babel src -s -d dist",
+    "build": "rm -rf dist && mkdir dist && babel src -s -d dist"
   },
   "author": "Andela Simulations Programme",
   "license": "MIT",
