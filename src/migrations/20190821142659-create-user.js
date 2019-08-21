@@ -1,3 +1,4 @@
+'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable("Users", {
@@ -7,8 +8,11 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      title: {
+      content: {
         type: Sequelize.STRING
+      },
+      complete: {
+        type: Sequelize.BOOLEAN
       },
       createdAt: {
         allowNull: false,

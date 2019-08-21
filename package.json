@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "migrate": "sequelize db:migrate"
+    "migrate": "sequelize db:migrate",
+    "start": "node ./src/bin/www",
+    "devstart": "babel-watch ./src/index.js",
+    "build": "rm -rf dist && mkdir dist && babel src -s -d dist"
   },
   "author": "Andela Simulations Programme",
   "license": "MIT",
