@@ -1,10 +1,11 @@
 const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
-const config = require(`${__dirname}/../database/config.js`)[env];
-
-const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
+const basename = path.basename(__filename);
+const pathLink = path.join(__dirname, '/../database/config.js')
+const config = require(pathLink)[env];
+
 const db = {};
 let sequelize;
 if (config.use_env_variable) {
