@@ -1,18 +1,16 @@
-import { Pool } from "pg";
-import dotenv from "dotenv";
+import { Pool } from 'pg';
+import { config } from 'dotenv';
 
-dotenv.config();
+config();
 
-const isProduction = process.env.NODE_ENV === "production";
+const isProduction = process.env.NODE_ENV === 'production';
 
 /**
  * Use this pattern in naming your local connection strings
  *  postgres://{database_username}:{database_password}@{host}:{port}/{database_name}
  */
 
-const connectionString = isProduction
-  ? process.env.DATABASE_URL
-  : "postgres://postgres:juninho1@127.0.0.1:5432/weTravel";
+const connectionString = isProduction ? process.env.DATABASE_URL : 'postgres://postgres:juninho1@127.0.0.1:5432/weTravel';
 
 const db = new Pool({ connectionString });
 
