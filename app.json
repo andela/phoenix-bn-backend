@@ -1,0 +1,20 @@
+{
+    "name": "phoenix-bn-backend",
+    "scripts": {},
+    "env": {},
+    "formation": {
+      "web": {
+        "quantity": 1
+      }
+    },
+    "addons": [
+      "heroku-postgresql"
+    ],
+    "buildpacks": [
+      {
+        "url": "heroku/nodejs"
+      }
+    ],
+    "stack": "heroku-18"
+  }
+
