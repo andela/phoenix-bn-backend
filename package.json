@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node ./src/bin/www",
     "devstart": "babel-watch ./src/index.js",
+    "seed": "sequelize db:seed:all",
     "build": "rm -rf dist && mkdir dist && babel src -s -d dist",
     "test": " set NODE_ENV=test&& mocha -r @babel/register --recursive src/tests/ --exit"
   },
