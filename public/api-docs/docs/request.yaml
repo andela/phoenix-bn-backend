@@ -106,6 +106,7 @@ components:
       CreateTravel:
         type: object
         $ref: '#/components/schemas/Request'
+        
 paths:
   /request: # request for travel endpoint
     post:
