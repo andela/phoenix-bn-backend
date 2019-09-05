@@ -29,7 +29,7 @@ module.exports = {
       unique: true,
       validate: {
         isEmail: true,
-      }
+      },
     },
     phoneNumber: {
       allowNull: true,

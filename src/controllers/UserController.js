@@ -29,8 +29,8 @@ export default class UserController {
       const randomPassword = 'password'; // Utils.randomPassword();
       const password = Utils.hashPassword(randomPassword);
       const data = await UserServices.createUser({ email, password });
-      const { id, isAdmin } = data;
-      const token = Utils.generateToken({ id, isAdmin });
+      const { id } = data;
+      const token = Utils.generateToken({ id, email });
       res.set('Authorization', `Bearer ${token}`);
       return resSuccess(res, 201, data);
     } catch (error) {
@@ -53,8 +53,8 @@ export default class UserController {
 
       if (isCorrectPassword) {
         delete user.password;
-        const { id, isAdmin, email } = user;
-        const token = Utils.generateToken({ id, isAdmin, email });
+        const { id, email } = user;
+        const token = Utils.generateToken({ id, email });
         res.set('Authorization', `Bearer ${token}`);
         return resSuccess(res, 200, user);
       }
