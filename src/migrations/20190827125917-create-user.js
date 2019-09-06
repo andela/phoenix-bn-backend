@@ -13,14 +13,6 @@ module.exports = {
         notNull: true,
       },
     },
-    userName: {
-      allowNull: false,
-      type: Sequelize.STRING,
-      unique: false,
-      validate: {
-        notNull: true,
-      },
-    },
     lastName: {
       allowNull: false,
       type: Sequelize.STRING,
