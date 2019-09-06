@@ -1,6 +1,7 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../..';
+import Utils from '../../utils';
 
 chai.use(chaiHttp);
 const { expect } = chai;
@@ -77,7 +78,62 @@ describe('POST /api/v1/auth/signup', () => {
       });
   });
 });
-
+describe('GET /api/v1/auth/verify', () => {
+  const isToken = Utils.generateToken({ id: 1, email: 'myemail@gmail.com' });
+  it('should verify a user', (done) => {
+    chai.request(app)
+      .get(`${endPoint}/auth/verify?token=${isToken}`)
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body.status).to.be.equal('success');
+        expect(res.body.data).to.have.property('message');
+        expect(res.body).to.be.an('object');
+        done();
+      });
+  });
+  it('should return an error message if user is verified', (done) => {
+    chai.request(app)
+      .get(`${endPoint}/auth/verify?token=${isToken}`)
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        expect(res.body.status).to.be.equal('error');
+        expect(res.body).to.have.property('error');
+        expect(res.body.error).to.be.a('string');
+        expect(res.body.error).to.include('Unsuccesful');
+        done();
+      });
+  });
+  it('should return an error message if verification link is invalid or expired', (done) => {
+    chai.request(app)
+      .get(`${endPoint}/auth/verify?token=28282328329dwdsd`)
+      .end((err, res) => {
+        expect(res).to.have.status(500);
+        expect(res.body.status).to.be.equal('error');
+        expect(res.body).to.have.property('error');
+        expect(res.body.error).to.be.a('string');
+        expect(res.body.error).to.include('Invalid');
+        done();
+      });
+  });
+});
+describe('GET/api/v1/auth/reverify/send', () => {
+  it('should send an email to user to reverify their account', (done) => {
+    const email = {
+      email: 'superadmin@gmail.com'
+    };
+    chai.request(app)
+      .get(`${endPoint}/auth/reverify/send`)
+      .send(email)
+      .end((err, res) => {
+        if (err) done(err);
+        expect(res).to.have.status(200);
+        expect(res.body.status).to.be.equal('success');
+        expect(res.body.data).to.have.property('message');
+        expect(res.body).to.be.an('object');
+        done();
+      });
+  });
+});
 describe('POST /api/v1/auth/signin', () => {
   it('should signin user and return 200', (done) => {
     const user = {

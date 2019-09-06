@@ -3,6 +3,7 @@ import Linkedn from 'node-linkedin';
 import Utils from '../utils';
 import UserServices from '../services/userServices';
 import ResponseMsg from '../utils/responseMessages';
+import NotifyUser from '../utils/notification';
 
 const scope = ['r_liteprofile', 'w_member_social', 'r_emailaddress'];
 const clientId = process.env.LINKENDIN_CLIENT_ID;
@@ -18,7 +19,7 @@ const { resSuccess, resSuccessShort, resError } = ResponseMsg;
 export default class UserController {
   /**
    * @name CreateUser
-   * @description Allows an admin add a new user
+   * @description Allows an admin add a new user and sends email verification to user
    * @param {object} req The request object
    * @param {object} res The response object
    * @returns {object} The API response
@@ -31,8 +32,13 @@ export default class UserController {
       const data = await UserServices.createUser({ email, password });
       const { id } = data;
       const token = Utils.generateToken({ id, email });
+      const verificationLink = `${process.env.APP_DEVURL}?token=${token}`;
+      await NotifyUser.signupEmail(email, verificationLink);
       res.set('Authorization', `Bearer ${token}`);
-      return resSuccess(res, 201, data);
+      return resSuccess(res, 201, {
+        message: 'User successfuly created, A Verification Mail has been sent to User',
+        ...data,
+      });
     } catch (error) {
       return resError(res, 500, error.message);
     }
@@ -215,6 +221,49 @@ export default class UserController {
       return resSuccessShort(res, 200);
     } catch (error) {
       return resError(res, 500, error.message);
+    }
+  }
+
+  /**
+   * @description - this method Verifies a user
+   * @param {object} req - The request payload sent to the router
+   * @param {object} res - The response payload sent back from the controller
+   * @returns {object} - object
+   */
+  static async verifyEmail(req, res) {
+    try {
+      const userDetails = await Utils.decodeToken(req.query.token);
+      const user = await UserServices.getUserByEmail(userDetails.email);
+      await UserServices.updateUserById({ name: 'isVerified', value: true }, user.id);
+      const homeLink = `${process.env.HOME_URL}`;
+      await NotifyUser.confirmUserVerified(user.email, homeLink);
+      return resSuccess(res, 200, {
+        message: 'Account verification was successful',
+      });
+    } catch (err) {
+      return resError(res, 500, 'Server error, Please try again later');
+    }
+  }
+
+  /**
+   * @description - this method Resends Verification Link to a user
+   * @param {object} req - The request payload sent to the router
+   * @param {object} res - The response payload sent back from the controller
+   * @returns {object} - object
+   */
+  static async resendVerifyEmail(req, res) {
+    try {
+      const { email } = req.body;
+      const { dataValues } = await UserServices.getUserByEmail(email);
+      const token = await Utils.generateToken({ id: dataValues.id, email });
+      const resendLink = `${process.env.APP_DEVURL}?token=${token}`;
+      await NotifyUser.sendReverify(email, resendLink);
+      res.set('Authorization', `Bearer ${token}`);
+      return resSuccess(res, 200, {
+        message: 'A new verification link has been sent to your mail',
+      });
+    } catch (err) {
+      return resError(res, 500, err.message);
     }
   }
 }

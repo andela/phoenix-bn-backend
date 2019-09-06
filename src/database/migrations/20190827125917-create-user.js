@@ -76,6 +76,11 @@ module.exports = {
         notNull: true,
       },
     },
+    isVerified: {
+      allowNull: true,
+      type: Sequelize.BOOLEAN,
+      defaultValue: false,
+    },
     createdAt: {
       allowNull: false,
       type: Sequelize.DATE,

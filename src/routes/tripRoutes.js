@@ -13,4 +13,3 @@ const tripRoutes = express.Router();
 tripRoutes.post('/trip', verifyToken, dateFormat, tripInputValidation, validationHandler, oneWayTrip);
 
 export default tripRoutes;
-

@@ -30,7 +30,7 @@ export default class NotifyUser {
     const title = 'Congratulations You Are Verified...';
     const body = `<p>Hi There,</p>
     <p class="message">Your account Verification was successful</p>
-    <p class="message">Click on the button below to Explore WeTravel</p>
+    <p class="message">Click on the button below to complete your Registeration</p>
         <a class="btn" href="${link}">Lets Go!</a>`;
     const message = template(title, body);
     Mailer.sendMail(email, title, message);

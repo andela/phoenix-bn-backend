@@ -25,6 +25,18 @@
       },
       "LINKENDIN_REDIRECT_URL": {
         "required": true
+      },
+      "SENDGRID_API_KEY": {
+        "required": true
+      },
+      "EMAIL": {
+        "required": true
+      },
+      "HOME_URL": {
+        "required": true
+      },
+      "APP_DEVURL": {
+        "required": true
       }
     },
     "formation": {

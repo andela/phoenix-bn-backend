@@ -9,7 +9,7 @@ const template = (title, body) => `
     <style>
       * {font-family: 'Roboto Mono',monospace;}
       .container {width: 80%; max-width: 60em; margin: 0 auto;background: #fbfbfb;padding: 30px;color:#000}
-      .username {font-size: 1rem;}
+      .username {font-size: 2rem;}
       .message{font-size: 1rem;line-height: 1.5;}
       .btn {display: inline-block;background: #20ba4e;padding: 10px; color: #fff !important;text-decoration: none;font-size: 1rem;}
     </style>
