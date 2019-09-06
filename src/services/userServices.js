@@ -23,7 +23,7 @@ export default class UserServices {
    * @returns {object} return the user's data
    */
   static async getUserByEmail(email) {
-    const data = await models.User.findOne({ where: { email } });
+    const data = await models.User.findOne({ where: { email, } });
     return data;
   }
 
