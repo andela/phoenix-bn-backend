@@ -1,4 +1,4 @@
-import userServices from '../services/userServices.js';
+import userServices from '../services/userServices';
 
 /**
  * User Middlewares Class

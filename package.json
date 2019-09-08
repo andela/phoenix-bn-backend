@@ -7,7 +7,7 @@
     "start": "node ./src/bin/www",
     "devstart": "set DEBUG=dev && babel-watch ./src/bin/www",
     "build": "rm -rf dist && mkdir dist && babel src -s -d dist",
-    "test": "set NODE_ENV=test&& npm run reset:db && mocha -r @babel/register --recursive src/tests/ --exit --timeout 10000",
+    "test": "set NODE_ENV=test&& npm run reset:db && nyc mocha -r @babel/register --recursive src/tests/ --exit --timeout 10000",
     "generate-lcov": "nyc report --reporter=text-lcov > lcov.info",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
     "codeclimate": "codeclimate-test-reporter > lcov.info",
