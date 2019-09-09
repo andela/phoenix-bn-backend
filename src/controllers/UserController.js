@@ -1,6 +1,8 @@
 import UserServices from '../services/userServices';
 import Utils from '../utils';
+import ResponseMsg from '../utils/responseMessages';
 
+const { resSuccess, resError } = ResponseMsg;
 /**
  * User controller Class
  */
@@ -17,13 +19,12 @@ export default class UserController {
       const userData = { ...req.body };
       userData.password = Utils.hashPassword(userData.password);
       const data = await UserServices.createUser(userData);
-      return res.status(201).json({
-        status: 201,
-        message: 'User successfuly created',
-        data,
-      });
+      const { id, isAdmin } = data;
+      const token = Utils.generateToken({ id, isAdmin });
+      res.set('Authorization', `Bearer ${token}`);
+      return resSuccess(res, 201, data);
     } catch (error) {
-      return res.status(500).json({ error: error.message });
+      return resError(res, 500, error.message);
     }
   }
 
@@ -41,26 +42,20 @@ export default class UserController {
 
       if (user && Utils.comparePassword(password, user.password)) {
         delete user.password;
-        return res.status(200).json({
-          status: 200,
-          data: user
-        });
+        const { id, isAdmin } = user;
+        const token = Utils.generateToken({ id, isAdmin });
+        res.set('Authorization', `Bearer ${token}`);
+        return resSuccess(res, 200, user);
       }
       if (user && !Utils.comparePassword(password, user.password)) {
-        return res.status(400).json({
-          status: 400,
-          error: 'Inavalid email/password.'
-        });
+        return resError(res, 401, 'Inavalid email/password.');
       }
     } catch (error) {
       let err = '';
       if (error.message === 'Illegal arguments: string, undefined') {
         err = 'User does not exist.';
       }
-      return res.status(400).json({
-        status: 400,
-        error: err
-      });
+      return resError(res, 404, err);
     }
   }
 }
