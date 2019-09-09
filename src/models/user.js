@@ -17,15 +17,15 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       defaultValue: 'password'
     },
+    isAdmin: {
+      allowNull: false,
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
     lastLogin: {
       allowNull: true,
       type: DataTypes.DATE,
       defaultValue: sequelize.fn('NOW')
-    },
-    isAdmin: {
-      allowNull: true,
-      type: DataTypes.BOOLEAN,
-      defaultValue: false,
     },
     phoneNumber: {
       allowNull: true,
