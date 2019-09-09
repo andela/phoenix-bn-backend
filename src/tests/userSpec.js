@@ -9,13 +9,7 @@ const endPoint = '/api/v1';
 describe('POST /api/v1/auth/signup', () => {
   it('should create a new user and return 201', (done) => {
     const user = {
-      firstName: 'victor',
-      lastName: 'nach',
-      userName: 'lazydev',
       email: 'myemail@gmail.com',
-      password: 'password',
-      phoneNumber: '09034343434',
-      isAdmin: false,
     };
     chai
       .request(app)
@@ -29,24 +23,12 @@ describe('POST /api/v1/auth/signup', () => {
         expect(res.body.data).to.have.property('id');
         expect(res.body.data.id).to.be.a('number');
         expect(res.body.data.id % 1).to.be.equal(0);
-        expect(res.body.data).to.have.property('firstName');
-        expect(res.body.data.firstName).to.be.a('string');
-        expect(res.body.data).to.have.property('lastName');
-        expect(res.body.data.lastName).to.be.a('string');
-        expect(res.body.data).to.have.property('email');
-        expect(res.body.data.email).to.be.a('string');
         done();
       });
   });
   it('should return 409 if user already exists', (done) => {
     const user = {
-      firstName: 'victor',
-      lastName: 'nach',
-      userName: 'lazydev',
       email: 'myemail@gmail.com',
-      password: 'password',
-      phoneNumber: '09034343434',
-      isAdmin: false,
     };
     chai
       .request(app)
@@ -63,12 +45,7 @@ describe('POST /api/v1/auth/signup', () => {
   });
   it('invalid input', (done) => {
     const user = {
-      email: 'victor@gmail.com',
-      firstName: 'moke',
-      lastName: 'ilo',
-      userName: 'huo hshsh',
-      password: '1234hdgdpds',
-      phoneNumber: '098333333',
+      email: 'vic./\tor@gmail.com',
     };
     chai.request(app)
       .post('/api/v1/auth/signup')

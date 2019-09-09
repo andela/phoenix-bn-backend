@@ -1,15 +1,15 @@
 export default (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
-    firstName: {
+    email: {
       allowNull: false,
+      type: DataTypes.STRING,
+    },
+    firstName: {
+      allowNull: true,
       type: DataTypes.STRING,
     },
     lastName: {
-      allowNull: false,
-      type: DataTypes.STRING,
-    },
-    email: {
-      allowNull: false,
+      allowNull: true,
       type: DataTypes.STRING,
       unique: true
     },
@@ -28,7 +28,7 @@ export default (sequelize, DataTypes) => {
       defaultValue: false,
     },
     phoneNumber: {
-      allowNull: false,
+      allowNull: true,
       type: DataTypes.STRING
     }
   });

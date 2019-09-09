@@ -14,9 +14,12 @@ const {
   getLinkedinAccountFromCode
 } = UserController;
 
+
+const { emailValidation } = userValidation;
+
 const { checkUserExists } = UserMiddlewares;
 
-userRoutes.post('/signup', userValidation, validationHandler, checkUserExists, createUser);
+userRoutes.post('/signup', emailValidation, validationHandler, checkUserExists, createUser);
 
 userRoutes.get('/user/google/signin', getGoogleUrl);
 userRoutes.get('/google/callback', getGoogleAccountFromCode);
