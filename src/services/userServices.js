@@ -26,4 +26,18 @@ export default class UserServices {
     const data = await models.User.findOne({ where: { email } });
     return data;
   }
+
+  /**
+  * @name updateUserById
+  * @description Interacts with model to find a single user
+  * @param { object } attribute the user attribute to update
+  * @param { string } id the user's id
+  * @returns {object} return the user's data
+  */
+  static async updateUserById(attribute, id) {
+    const { name, value } = attribute;
+    const userDetails = await models.User.update({ [name]: value },
+      { where: { id, } }, { returning: true });
+    return userDetails;
+  }
 }

@@ -89,6 +89,17 @@ class Utils {
   static getGooglePlusApi(auth) {
     return google.plus({ version: 'v1', auth });
   }
+
+  /**
+   * @method verifyToken
+   * @description Verifies generated user token
+   * @param { string } token
+   * @returns { Object } payload - { user_id, is_admin }
+   */
+  static verifyToken(token) {
+    const decoded = jwt.verify(token, process.env.SECRET);
+    return decoded;
+  }
 }
 
 export default Utils;

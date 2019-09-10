@@ -134,4 +134,28 @@ export default class UserController {
       profileRequest.end();
     });
   }
+
+  /**
+ * @name updateUserInfo
+ * @description Updates user profile to complete registration
+ * @param {object} req The request object
+ * @param {object} res The response object
+ * @returns {object} The API response
+ */
+  static async updateUserInfo(req, res) {
+    try {
+      const userData = { ...req.body };
+      const { token } = req.query;
+      const userDetails = Utils.verifyToken(token);
+      userData.password = Utils.hashPassword(userData.password);
+      const user = await UserServices.updateUserById({ name: 'isVerified', value: true }, userDetails.id);
+      res.set('Authorization', `Bearer ${token}`);
+      if (user) {
+        return resSuccess(res, 201, user);
+      }
+      return resError(res, 404, 'User does not exist');
+    } catch (error) {
+      return resError(res, 500, error.message);
+    }
+  }
 }

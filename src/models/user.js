@@ -1,14 +1,54 @@
 export default (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     firstName: {
-      allowNull: false,
-      type: DataTypes.STRING,
+      allowNull: true,
+      type: DataTypes.STRING
     },
     lastName: {
-      allowNull: false,
-      type: DataTypes.STRING,
+      allowNull: true,
+      type: DataTypes.STRING
     },
     email: {
+      allowNull: false,
+      type: DataTypes.STRING,
+      unique: true
+    },
+    birthDate: {
+      allowNull: false,
+      type: DataTypes.STRING,
+      unique: true
+    },
+    residence: {
+      allowNull: false,
+      type: DataTypes.STRING,
+      unique: true
+    },
+    lineManager: {
+      allowNull: false,
+      type: DataTypes.STRING,
+      unique: true
+    },
+    preferredLanguage: {
+      allowNull: false,
+      type: DataTypes.STRING,
+      unique: true
+    },
+    preferredCurrency: {
+      allowNull: false,
+      type: DataTypes.STRING,
+      unique: true
+    },
+    department: {
+      allowNull: false,
+      type: DataTypes.STRING,
+      unique: true
+    },
+    role: {
+      allowNull: false,
+      type: DataTypes.STRING,
+      unique: true
+    },
+    gender: {
       allowNull: false,
       type: DataTypes.STRING,
       unique: true
@@ -25,10 +65,10 @@ export default (sequelize, DataTypes) => {
     isAdmin: {
       allowNull: true,
       type: DataTypes.BOOLEAN,
-      defaultValue: false,
+      defaultValue: false
     },
     phoneNumber: {
-      allowNull: false,
+      allowNull: true,
       type: DataTypes.STRING
     }
   });
