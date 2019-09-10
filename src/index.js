@@ -4,7 +4,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import errorhandler from 'errorhandler';
 import { serve, setup } from 'swagger-ui-express';
-import swaggerDoc from '../public/api-docs/swaggerDoc';
+import swaggerDoc from '../public/api-docs/config/swaggerDef';
 import Router from './routes';
 
 const isProduction = process.env.NODE_ENV === 'production';
