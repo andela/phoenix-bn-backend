@@ -100,7 +100,21 @@ paths:
                     example: '200'
                   data:
                     $ref: '#/components/schemas/SignedUser'
-        '400':
+        '422':
+          description: Response when signup is not successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: 422 error status code
+                    example: '422'
+                  error: 
+                    type: object/string
+                    example: 'No email was provided'
+        '401':
           description: Response for an unsuccessful login
           content:
             application/json:
@@ -114,6 +128,20 @@ paths:
                   error: 
                     type: object/string
                     example: 'Invalid email/password'
+        '404':
+          description: Response when no such user exist
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: 400 error status code
+                    example: '400'
+                  error: 
+                    type: object/string
+                    example: 'User does not exist.'
   /auth/user: # authorize user endpoint
     post:
       tags:
@@ -147,6 +175,20 @@ paths:
                     example: '201'
                   data:
                     $ref: '#/components/schemas/User'
+        '422':
+          description: Response when signup is not successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: 422 error status code
+                    example: '422'
+                  error: 
+                    type: object/string
+                    example: 'No email was provided'
         '409':
           description: Response gotten when user already exist
           content:

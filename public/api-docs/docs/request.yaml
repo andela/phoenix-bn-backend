@@ -155,3 +155,4 @@ paths:
                   error: 
                     type: object/string
                     example: 'Invalid email'
+                    
