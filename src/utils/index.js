@@ -52,6 +52,21 @@ class Utils {
   }
 
   /**
+   * verifyToken
+   * @description verifies a token and return the payload
+   * @param { String } sentToken
+   * @returns { Object } decoded
+   */
+  static verifyToken(sentToken) {
+    try {
+      const decoded = jwt.verify(sentToken, process.env.SECRET);
+      return decoded;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  /**
    * @name createConnection
    * @return {json} Returns json object
    * @memberof Utils

@@ -11,8 +11,12 @@ export default class UserServices {
    * @returns {object} return the updated field
    */
   static async createUser(userData) {
-    const { dataValues } = await models.User.create(userData);
-    delete dataValues.password; // remove sensitive data from returned object
+    const dataValues = await models.Sequelize.Transaction(async (t) => {
+      const m = await models.User.create(userData, { transaction: t });
+      return m;
+    });
+    // const { dataValues } = await models.User.create(userData);
+    // delete dataValues.password; // remove sensitive data from returned object
     return dataValues;
   }
 
