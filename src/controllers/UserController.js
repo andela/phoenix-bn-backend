@@ -25,9 +25,10 @@ export default class UserController {
    */
   static async createUser(req, res) {
     try {
-      const userData = { ...req.body };
-      userData.password = Utils.hashPassword(userData.password);
-      const data = await UserServices.createUser(userData);
+      const { email } = req.body;
+      const randomPassword = 'password'; // Utils.randomPassword();
+      const password = Utils.hashPassword(randomPassword);
+      const data = await UserServices.createUser({ email, password });
       const { id, isAdmin } = data;
       const token = Utils.generateToken({ id, isAdmin });
       res.set('Authorization', `Bearer ${token}`);
