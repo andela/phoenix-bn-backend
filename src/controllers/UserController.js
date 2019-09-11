@@ -38,7 +38,7 @@ export default class UserController {
   }
 
   /**
- * @name getUser
+ * @name login
  * @description Allows user to sign in user
  * @param {object} req The request object
  * @param {object} res The response object
@@ -52,8 +52,8 @@ export default class UserController {
 
       if (isCorrectPassword) {
         delete user.password;
-        const { id, isAdmin } = user;
-        const token = Utils.generateToken({ id, isAdmin });
+        const { id, isAdmin, email } = user;
+        const token = Utils.generateToken({ id, isAdmin, email });
         res.set('Authorization', `Bearer ${token}`);
         return resSuccess(res, 200, user);
       }
