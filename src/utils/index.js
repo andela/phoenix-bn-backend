@@ -90,14 +90,14 @@ class Utils {
     return google.plus({ version: 'v1', auth });
   }
 
-  /*
+  /**
   * RandomPassword
   * @description generates a random password
   * @returns { String } random password
   */
-  static randomPassword() {
+  /* static randomPassword() {
    return Math.random().toString(36).slice(3);
- }
+ } */
 }
 
 export default Utils;

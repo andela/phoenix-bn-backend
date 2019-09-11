@@ -59,6 +59,69 @@ describe('POST /api/v1/auth/signup', () => {
       });
   });
 });
+
+describe('POST /api/v1/auth/signin', () => {
+  it('should signin user and return 200', (done) => {
+    const user = {
+      email: 'myemail@gmail.com',
+      password: 'password'
+    };
+    chai.request(app)
+      .post(`${endPoint}/auth/signin`)
+      .send(user)
+      .end((_err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body).to.have.property('data');
+        done();
+      });
+  });
+  it('should not signin user and return 401', (done) => {
+    const invalidUser = {
+      email: 'myemail@gmail.com',
+      password: 'passwordno'
+    };
+    chai.request(app)
+      .post(`${endPoint}/auth/signin`)
+      .send(invalidUser)
+      .end((_err, res) => {
+        expect(res).to.have.status(401);
+        expect(res.body).be.an('object');
+        expect(res.body).to.have.property('error');
+        done();
+      });
+  });
+  it('should not signin user and return 404', (done) => {
+    const invalidUser2 = {
+      email: 'myemail@gmail.commm',
+      password: 'passwordno'
+    };
+    chai.request(app)
+      .post(`${endPoint}/auth/signin`)
+      .send(invalidUser2)
+      .end((_err, res) => {
+        expect(res).to.have.status(404);
+        expect(res.body).be.an('object');
+        expect(res.body).to.have.property('error');
+        done();
+      });
+  });
+  it('should not signin user and return 422', (done) => {
+    const invalidUser2 = {
+      email: '',
+      password: 'passwordno'
+    };
+    chai.request(app)
+      .post(`${endPoint}/auth/signin`)
+      .send(invalidUser2)
+      .end((_err, res) => {
+        expect(res).to.have.status(422);
+        expect(res.body).be.an('object');
+        expect(res.body).to.have.property('error');
+        done();
+      });
+  });
+});
+
 describe('GET /api/v1/user/google/signin', () => {
   it('should create an authentication url and return 200', (done) => {
     chai

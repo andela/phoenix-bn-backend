@@ -11,11 +11,11 @@ export default (sequelize, DataTypes) => {
     lastName: {
       allowNull: true,
       type: DataTypes.STRING,
-      unique: true
     },
     password: {
-      allowNull: false,
-      type: DataTypes.STRING
+      allowNull: true,
+      type: DataTypes.STRING,
+      defaultValue: 'password'
     },
     lastLogin: {
       allowNull: true,

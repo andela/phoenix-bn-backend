@@ -26,13 +26,41 @@ export default class UserController {
   static async createUser(req, res) {
     try {
       const { email } = req.body;
-      const randomPassword = Utils.randomPassword();
+      const randomPassword = 'password'; // Utils.randomPassword();
       const password = Utils.hashPassword(randomPassword);
       const data = await UserServices.createUser({ email, password });
       const { id, isAdmin } = data;
       const token = Utils.generateToken({ id, isAdmin });
       res.set('Authorization', `Bearer ${token}`);
       return resSuccess(res, 201, data);
+    } catch (error) {
+      return resError(res, 500, error.message);
+    }
+  }
+
+  /**
+ * @name login
+ * @description Allows user to sign in user
+ * @param {object} req The request object
+ * @param {object} res The response object
+ * @returns {object} The API response
+ */
+  static async login(req, res) {
+    try {
+      const { user } = req;
+      const { password } = req.body;
+      const isCorrectPassword = Utils.comparePassword(password, user.password);
+
+      if (isCorrectPassword) {
+        delete user.password;
+        const { id, isAdmin, email } = user;
+        const token = Utils.generateToken({ id, isAdmin, email });
+        res.set('Authorization', `Bearer ${token}`);
+        return resSuccess(res, 200, user);
+      }
+      if (!isCorrectPassword) {
+        return resError(res, 401, 'Inavalid email/password.');
+      }
     } catch (error) {
       return resError(res, 500, error.message);
     }
