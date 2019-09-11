@@ -1,6 +1,6 @@
 import { check } from 'express-validator';
 
-const userValidation = [
+const userValidations = [
   check('firstName').trim().not().isEmpty()
     .withMessage('First name field cannot be empty.'),
   check('lastName').trim().not().isEmpty()
@@ -23,4 +23,11 @@ const userValidation = [
   check('phoneNumber').isNumeric().withMessage('It has to be a valid phone number'),
 ];
 
-export default userValidation;
+const emailValidation = [
+  check('email').trim().not().isEmpty()
+    .withMessage('Email field cannot be empty'),
+  check('email').isEmail().withMessage('Enter valid email address.'),
+  check('email').normalizeEmail(),
+];
+
+export default { userValidations, emailValidation };

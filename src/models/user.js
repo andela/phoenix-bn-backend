@@ -6,55 +6,47 @@ export default (sequelize, DataTypes) => {
     },
     lastName: {
       allowNull: true,
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      unique: true
     },
     email: {
       allowNull: false,
       type: DataTypes.STRING,
-      unique: true
     },
     birthDate: {
-      allowNull: false,
+      allowNull: true,
       type: DataTypes.STRING,
-      unique: true
     },
     residence: {
-      allowNull: false,
+      allowNull: true,
       type: DataTypes.STRING,
-      unique: true
     },
     lineManager: {
-      allowNull: false,
+      allowNull: true,
       type: DataTypes.STRING,
-      unique: true
     },
     preferredLanguage: {
-      allowNull: false,
+      allowNull: true,
       type: DataTypes.STRING,
-      unique: true
     },
     preferredCurrency: {
-      allowNull: false,
+      allowNull: true,
       type: DataTypes.STRING,
-      unique: true
     },
     department: {
-      allowNull: false,
+      allowNull: true,
       type: DataTypes.STRING,
-      unique: true
     },
     role: {
-      allowNull: false,
+      allowNull: true,
       type: DataTypes.STRING,
-      unique: true
     },
     gender: {
-      allowNull: false,
+      allowNull: true,
       type: DataTypes.STRING,
-      unique: true
     },
     password: {
-      allowNull: false,
+      allowNull: true,
       type: DataTypes.STRING
     },
     lastLogin: {

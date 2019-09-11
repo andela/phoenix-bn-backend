@@ -100,6 +100,15 @@ class Utils {
     const decoded = jwt.verify(token, process.env.SECRET);
     return decoded;
   }
+
+  /**
+  * @RandomPassword
+  * @description generates a random password
+  * @returns { String } random password
+  */
+  static randomPassword() {
+    return Math.random().toString(36).slice(3);
+  }
 }
 
 export default Utils;
