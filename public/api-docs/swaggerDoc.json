@@ -140,29 +140,9 @@
                         "schema": {
                             "type": "object",
                             "properties": {
-                                "firstName": {
-                                    "type": "string",
-                                    "example": "john"
-                                },
-                                "lastName": {
-                                    "type": "string",
-                                    "example": "doe"
-                                },
-                                "userName": {
-                                    "type": "string",
-                                    "example": "johnny"
-                                },
                                 "email": {
                                     "type": "string",
                                     "example": "johndoe@company.com"
-                                },
-                                "password": {
-                                    "type": "string",
-                                    "example": "password"
-                                },
-                                "phoneNumber": {
-                                    "type": "string",
-                                    "example": "09023232322"
                                 }
                             }
                         }

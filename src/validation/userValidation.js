@@ -19,4 +19,11 @@ const userValidation = [
   check('phoneNumber').isNumeric().withMessage('It has to be a valid phone number'),
 ];
 
-export default userValidation;
+const emailValidation = [
+  check('email').trim().not().isEmpty()
+    .withMessage('Email field cannot be empty'),
+  check('email').isEmail().withMessage('Enter valid email address.'),
+  check('email').normalizeEmail(),
+];
+
+export default { userValidation, emailValidation };
