@@ -93,10 +93,11 @@ class Utils {
   /**
    * @method verifyToken
    * @description Verifies generated user token
-   * @param { string } token
+   * @param { string } auth
    * @returns { Object } payload - { user_id, is_admin }
    */
-  static verifyToken(token) {
+  static verifyToken(auth) {
+    const token = auth.slice(7, auth.length).trimLeft();
     const decoded = jwt.verify(token, process.env.SECRET);
     return decoded;
   }

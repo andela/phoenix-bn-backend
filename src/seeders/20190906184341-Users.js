@@ -1,4 +1,5 @@
 import { config } from 'dotenv';
+import Utils from '../utils/index';
 
 config();
 
@@ -11,7 +12,7 @@ module.exports = {
           firstName: 'Wetravel',
           lastName: 'user1',
           email: 'wetravel.user1@gmail.com',
-          password: process.env.SECRET,
+          password: Utils.hashPassword(process.env.SECRET),
           phoneNumber: 12345678,
           createdAt: new Date(),
           updatedAt: new Date()
@@ -20,7 +21,7 @@ module.exports = {
           firstName: 'chidi',
           lastName: 'nma',
           email: 'chidimma@gmail.com',
-          password: process.env.SECRET,
+          password: Utils.hashPassword(process.env.SECRET),
           phoneNumber: 12345678,
           createdAt: new Date(),
           updatedAt: new Date()

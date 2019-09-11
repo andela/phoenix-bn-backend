@@ -17,7 +17,7 @@ export default (sequelize, DataTypes) => {
       allowNull: true,
       type: DataTypes.STRING,
     },
-    residence: {
+    residenceAddress: {
       allowNull: true,
       type: DataTypes.STRING,
     },
@@ -37,17 +37,14 @@ export default (sequelize, DataTypes) => {
       allowNull: true,
       type: DataTypes.STRING,
     },
-    role: {
-      allowNull: true,
-      type: DataTypes.STRING,
-    },
     gender: {
       allowNull: true,
       type: DataTypes.STRING,
     },
     password: {
       allowNull: true,
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      defaultValue: 'password'
     },
     lastLogin: {
       allowNull: true,
@@ -64,5 +61,13 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.STRING
     }
   });
+
+  User.associate = (models) => {
+    User.belongsToMany(models.Role, {
+      through: 'UserRole',
+      as: 'role',
+      foreignKey: 'userId'
+    });
+  };
   return User;
 };

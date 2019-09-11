@@ -15,8 +15,9 @@ module.exports = {
       type: Sequelize.STRING,
     },
     password: {
-      allowNull: false,
+      allowNull: true,
       type: Sequelize.STRING,
+      defaultValue: 'password',
     },
     lastLogin: {
       allowNull: true,
@@ -34,7 +35,7 @@ module.exports = {
       allowNull: true,
       type: Sequelize.STRING,
     },
-    residence: {
+    residenceAddress: {
       allowNull: true,
       type: Sequelize.STRING,
     },
@@ -51,10 +52,6 @@ module.exports = {
       type: Sequelize.STRING,
     },
     department: {
-      allowNull: true,
-      type: Sequelize.STRING,
-    },
-    role: {
       allowNull: true,
       type: Sequelize.STRING,
     },

@@ -26,13 +26,40 @@ export default class UserController {
   static async createUser(req, res) {
     try {
       const { email } = req.body;
-      const randomPassword = Utils.randomPassword();
+      const randomPassword = 'password'; // Utils.randomPassword();
       const password = Utils.hashPassword(randomPassword);
       const data = await UserServices.createUser({ email, password });
       const { id, isAdmin } = data;
       const token = Utils.generateToken({ id, isAdmin });
       res.set('Authorization', `Bearer ${token}`);
       return resSuccess(res, 201, data);
+    } catch (error) {
+      return resError(res, 500, error.message);
+    }
+  }
+
+  /**
+ * @name login
+ * @description Allows user to sign in user
+ * @param {object} req The request object
+ * @param {object} res The response object
+ * @returns {object} The API response
+ */
+  static async login(req, res) {
+    try {
+      const { user } = req;
+      const { password } = req.body;
+      const isCorrectPassword = Utils.comparePassword(password, user.password);
+      if (isCorrectPassword) {
+        delete user.password;
+        const { id, isAdmin, email } = user;
+        const token = Utils.generateToken({ id, isAdmin, email });
+        res.set('Authorization', `Bearer ${token}`);
+        return resSuccess(res, 200, user);
+      }
+      if (!isCorrectPassword) {
+        return resError(res, 401, 'Invalid email/password.');
+      }
     } catch (error) {
       return resError(res, 500, error.message);
     }
@@ -146,11 +173,10 @@ export default class UserController {
   static async updateUserInfo(req, res) {
     try {
       const userData = { ...req.body };
-      const { token } = req.query;
-      const userDetails = Utils.verifyToken(token);
+      const { authorization } = req.headers;
+      const userDetails = Utils.verifyToken(authorization);
       userData.password = Utils.hashPassword(userData.password);
-      const user = await UserServices.updateUserById({ name: 'isVerified', value: true }, userDetails.id);
-      res.set('Authorization', `Bearer ${token}`);
+      const user = await UserServices.updateUserInfoById({ ...userData }, userDetails.id);
       if (user) {
         return resSuccess(res, 201, user);
       }
