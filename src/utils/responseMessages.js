@@ -33,5 +33,19 @@ class ResponseMsg {
       data,
     });
   }
+
+  /**
+     * response
+     * @param { Object } res
+     * @param { Number } status
+     * @returns { Object } response body
+     * @description defines the standard response format when a data object is to be returned
+     * @memberof ResponseMsg
+     */
+  static resSuccessShort(res, status) {
+    return res.status(status).json({
+      status: 'success',
+    });
+  }
 }
 export default ResponseMsg;
