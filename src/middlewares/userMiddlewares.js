@@ -1,4 +1,4 @@
-import userServices from '../services/userServices';
+import UserServices from '../services/userServices';
 import ResponseMsg from '../utils/responseMessages';
 
 const { resError } = ResponseMsg;
@@ -18,7 +18,7 @@ export default class UserMiddlewares {
   static async checkUserExists(req, res, next) {
     try {
       const { email } = req.body;
-      const data = await userServices.getUserByEmail(email);
+      const data = await UserServices.getUserByEmail(email);
       if (!data) return next();
       return resError(res, 409, 'Unsuccesful, user already exists, kindly use a different email.');
     } catch (error) {
@@ -37,7 +37,7 @@ export default class UserMiddlewares {
   static async checkUserExistBeforeLogin(req, res, next) {
     try {
       const { email } = req.body;
-      const data = await userServices.getUserByEmail(email);
+      const data = await UserServices.getUserByEmail(email);
       if (data) {
         req.user = data.dataValues;
         return next();

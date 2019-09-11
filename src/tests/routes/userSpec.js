@@ -1,5 +1,6 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
+import Utils from '../../utils';
 import app from '../..';
 
 chai.use(chaiHttp);
@@ -163,6 +164,47 @@ describe('GET /api/v1/user/linkedin/signin', () => {
         expect(res.body.status).to.be.equal('success');
         expect(res.body).to.have.property('data');
         expect(res.body).to.be.a('object');
+        done();
+      });
+  });
+});
+
+describe('POST /api/v1/auth/forgetpassword', () => {
+  it('should send an email to user to reset their password', (done) => {
+    const email = {
+      email: 'superadmin@gmail.com'
+    };
+    chai.request(app)
+      .post(`${endPoint}/auth/forgetpassword`)
+      .send(email)
+      .end((err, res) => {
+        if (err) done(err);
+        expect(res).to.have.status(200);
+        expect(res.body.status).to.be.equal('success');
+        expect(res.body.data).to.have.property('message');
+        expect(res.body.data.message).to.be.a('string');
+        done();
+      });
+  });
+});
+
+describe('PATCH /api/v1/auth/resetpassword/:token', () => {
+  it('should update user password', (done) => {
+    const password = {
+      password: 'randomme34'
+    };
+    const email = 'superadmin@gmail.com';
+    const id = 1;
+    const secureToken = Utils.generateToken({ email, id });
+    chai.request(app)
+      .patch(`${endPoint}/auth/resetpassword/${secureToken}`)
+      .send(password)
+      .end((err, res) => {
+        if (err) done(err);
+        expect(res).to.have.status(200);
+        expect(res.body.status).to.be.equal('success');
+        expect(res.body.data).to.have.property('message');
+        expect(res.body.data.message).to.be.a('string');
         done();
       });
   });

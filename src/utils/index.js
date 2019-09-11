@@ -44,11 +44,12 @@ class Utils {
   /**
    * generateToken
    * @description generates authentication token
-   * @param { Object } payload - { id, isAdmin }
+   * @param { Object } payload - { id, isAdmin, user email }
+   * @param { Object } expiresIn - { time }
    * @returns { String } token
    */
-  static generateToken(payload) {
-    return jwt.sign(payload, process.env.SECRET, { expiresIn: '2h' });
+  static generateToken(payload, expiresIn = '2h') {
+    return jwt.sign(payload, process.env.SECRET, { expiresIn });
   }
 
   /**
@@ -98,7 +99,6 @@ class Utils {
   /* static randomPassword() {
    return Math.random().toString(36).slice(3);
  } */
-
   /**
    * decodeToken
    * @description decodes the token and returns the corresponding payload
@@ -110,5 +110,4 @@ class Utils {
     return jwt.verify(token, process.env.SECRET);
   }
 }
-
 export default Utils;

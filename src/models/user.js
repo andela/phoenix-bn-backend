@@ -35,6 +35,11 @@ export default (sequelize, DataTypes) => {
     phoneNumber: {
       allowNull: true,
       type: DataTypes.STRING
+    },
+    isVerified: {
+      allowNull: false,
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
     }
   });
   return User;
