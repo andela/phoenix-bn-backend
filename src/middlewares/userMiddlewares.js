@@ -1,4 +1,4 @@
-import userServices from '../services/userServices';
+import userServices from '../services/UserServices';
 import ResponseMsg from '../utils/responseMessages';
 import Utils from '../utils';
 

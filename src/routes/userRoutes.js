@@ -1,6 +1,6 @@
 import express from 'express';
 import UserController from '../controllers/UserController';
-import UserMiddlewares from '../middlewares/userMiddlewares';
+import UserMiddlewares from '../middlewares/UserMiddlewares';
 import {
   userSignupValidation,
   userLoginValidation,

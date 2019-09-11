@@ -1,21 +1,21 @@
 export default (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
-    firstName: {
-      allowNull: false,
-      type: DataTypes.STRING,
-    },
-    lastName: {
-      allowNull: false,
-      type: DataTypes.STRING,
-    },
     email: {
       allowNull: false,
       type: DataTypes.STRING,
-      unique: true
+    },
+    firstName: {
+      allowNull: true,
+      type: DataTypes.STRING,
+    },
+    lastName: {
+      allowNull: true,
+      type: DataTypes.STRING,
     },
     password: {
-      allowNull: false,
-      type: DataTypes.STRING
+      allowNull: true,
+      type: DataTypes.STRING,
+      defaultValue: 'password'
     },
     lastLogin: {
       allowNull: true,
@@ -23,7 +23,7 @@ export default (sequelize, DataTypes) => {
       defaultValue: sequelize.fn('NOW')
     },
     phoneNumber: {
-      allowNull: false,
+      allowNull: true,
       type: DataTypes.STRING
     },
     gender: {

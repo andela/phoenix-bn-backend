@@ -7,21 +7,21 @@ module.exports = {
       type: Sequelize.INTEGER
     },
     firstName: {
-      allowNull: false,
+      allowNull: true,
       type: Sequelize.STRING,
       validate: {
         notNull: false,
       },
     },
     lastName: {
-      allowNull: false,
+      allowNull: true,
       type: Sequelize.STRING,
       validate: {
         notNull: false,
       },
     },
     password: {
-      allowNull: false,
+      allowNull: true,
       type: Sequelize.STRING,
       validate: {
         notNull: false,
@@ -37,11 +37,10 @@ module.exports = {
       unique: true,
       validate: {
         isEmail: true,
-        notNull: true,
-      },
+      }
     },
     phoneNumber: {
-      allowNull: false,
+      allowNull: true,
       type: Sequelize.STRING,
       validate: {
         notNull: false,
