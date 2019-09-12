@@ -5,6 +5,21 @@ import app from '../..';
 chai.use(chaiHttp);
 const { expect } = chai;
 const endPoint = '/api/v1';
+let token;
+const seededUser = {
+  email: 'chidimma@gmail.com',
+  password: process.env.SECRET,
+};
+
+before('get user token', (done) => {
+  chai.request(app)
+    .post(`${endPoint}/auth/signin`)
+    .send(seededUser)
+    .end((err, res) => {
+      token = res.headers.authorization;
+      done();
+    });
+});
 
 describe('POST /api/v1/auth/signup', () => {
   it('should create a new user and return 201', (done) => {
@@ -14,6 +29,7 @@ describe('POST /api/v1/auth/signup', () => {
     chai
       .request(app)
       .post(`${endPoint}/auth/signup`)
+      .set('Authorization', token)
       .send(user)
       .end((_err, res) => {
         expect(res).to.have.status(201);
@@ -33,6 +49,7 @@ describe('POST /api/v1/auth/signup', () => {
     chai
       .request(app)
       .post(`${endPoint}/auth/signup`)
+      .set('Authorization', token)
       .send(user)
       .end((_err, res) => {
         expect(res).to.have.status(409);
@@ -49,6 +66,7 @@ describe('POST /api/v1/auth/signup', () => {
     };
     chai.request(app)
       .post('/api/v1/auth/signup')
+      .set('Authorization', token)
       .send(user)
       .end((err, res) => {
         expect(res).to.have.status(422);

@@ -98,6 +98,17 @@ class Utils {
   /* static randomPassword() {
    return Math.random().toString(36).slice(3);
  } */
+
+  /**
+   * decodeToken
+   * @description decodes the token and returns the corresponding payload
+   * @param { String } token
+   * @returns { Object } payload - { id, email, isAdmin }
+   * @memberof Utils
+   */
+  static decodeToken(token) {
+    return jwt.verify(token, process.env.SECRET);
+  }
 }
 
 export default Utils;

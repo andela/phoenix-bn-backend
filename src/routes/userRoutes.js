@@ -3,6 +3,7 @@ import UserController from '../controllers/UserController';
 import UserMiddlewares from '../middlewares/userMiddlewares';
 import userValidations from '../validation/userValidation';
 import validationHandler from '../validation/validationHandler';
+import Auth from '../middlewares/auth';
 
 const userRoutes = express.Router();
 
@@ -17,8 +18,9 @@ const {
 
 const { checkUserExists, checkUserExistBeforeLogin } = UserMiddlewares;
 const { emailValidation, userLoginValidation } = userValidations;
+const { verifyToken } = Auth;
 
-userRoutes.post('/signup', emailValidation, validationHandler, checkUserExists, createUser);
+userRoutes.post('/signup', verifyToken, emailValidation, validationHandler, checkUserExists, createUser);
 userRoutes.post('/signin', userLoginValidation, validationHandler, checkUserExistBeforeLogin, login);
 
 userRoutes.get('/user/google/signin', getGoogleUrl);
