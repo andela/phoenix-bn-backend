@@ -89,26 +89,25 @@ class Utils {
   static getGooglePlusApi(auth) {
     return google.plus({ version: 'v1', auth });
   }
-
-  /**
-   * @method verifyToken
-   * @description Verifies generated user token
-   * @param { string } auth
-   * @returns { Object } payload - { user_id, is_admin }
-   */
-  static verifyToken(auth) {
-    const token = auth.slice(7, auth.length).trimLeft();
-    const decoded = jwt.verify(token, process.env.SECRET);
-    return decoded;
-  }
-
+  
   /**
   * @RandomPassword
   * @description generates a random password
   * @returns { String } random password
   */
-  static randomPassword() {
-    return Math.random().toString(36).slice(3);
+  /* static randomPassword() {
+   return Math.random().toString(36).slice(3);
+ } */
+
+  /**
+   * decodeToken
+   * @description decodes the token and returns the corresponding payload
+   * @param { String } token
+   * @returns { Object } payload - { id, email, isAdmin }
+   * @memberof Utils
+   */
+  static decodeToken(token) {
+    return jwt.verify(token, process.env.SECRET);
   }
 }
 

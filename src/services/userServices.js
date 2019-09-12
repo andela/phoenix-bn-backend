@@ -28,24 +28,13 @@ export default class UserServices {
   }
 
   /**
-  * @name GetUserById
-  * @description Interacts with model to find a single user
-  * @param { string } id the user's email
-  * @returns {object} return the user's data
-  */
-  static async getUserById(id) {
-    const data = await models.User.findOne({ where: { id } });
-    return data;
-  }
-
-  /**
   * @name updateUserInfoById
   * @description Interacts with model to find a single user
   * @param { object } attribute the user attribute to update
-  * @param { string } id the user's id
+  * @param { string } email the user's email
   * @returns {object} return the user's data
   */
-  static async updateUserInfoById(attribute, id) {
+  static async updateUserInfoById(attribute, email) {
     const {
       firstName, lastName, birthDate, preferredLanguage, preferredCurrency, residenceAddress,
       gender, department, lineManager, phoneNumber
@@ -62,7 +51,7 @@ export default class UserServices {
       department,
       phoneNumber,
     },
-    { where: { id }, returning: true, plain: true });
+    { where: { email }, returning: true, plain: true });
     return userDetails;
   }
 }

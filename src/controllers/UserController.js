@@ -29,8 +29,8 @@ export default class UserController {
       const randomPassword = 'password'; // Utils.randomPassword();
       const password = Utils.hashPassword(randomPassword);
       const data = await UserServices.createUser({ email, password });
-      const { id, isAdmin } = data;
-      const token = Utils.generateToken({ id, isAdmin });
+      const { id } = data;
+      const token = Utils.generateToken({ id, email });
       res.set('Authorization', `Bearer ${token}`);
       return resSuccess(res, 201, data);
     } catch (error) {
@@ -52,8 +52,8 @@ export default class UserController {
       const isCorrectPassword = Utils.comparePassword(password, user.password);
       if (isCorrectPassword) {
         delete user.password;
-        const { id, isAdmin, email } = user;
-        const token = Utils.generateToken({ id, isAdmin, email });
+        const { id, email } = user;
+        const token = Utils.generateToken({ id, email });
         res.set('Authorization', `Bearer ${token}`);
         return resSuccess(res, 200, user);
       }
@@ -173,12 +173,13 @@ export default class UserController {
   static async updateUserInfo(req, res) {
     try {
       const userData = { ...req.body };
-      const { authorization } = req.headers;
-      const userDetails = Utils.verifyToken(authorization);
+      const { user } = req;
       userData.password = Utils.hashPassword(userData.password);
-      const user = await UserServices.updateUserInfoById({ ...userData }, userDetails.id);
-      if (user) {
-        return resSuccess(res, 201, user);
+      const data = await UserServices.updateUserInfoById({ ...userData }, user.email);
+      const userInfo = data[1].dataValues;
+      if (userInfo) {
+        delete userInfo.password;
+        return resSuccess(res, 201, userInfo);
       }
       return resError(res, 404, 'User does not exist');
     } catch (error) {

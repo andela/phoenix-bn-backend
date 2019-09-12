@@ -1,23 +1,24 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import app from '..';
+import app from '../..';
 
 chai.use(chaiHttp);
 const { expect } = chai;
 const endPoint = '/api/v1';
-
 let token;
-const User = {
+const seededUser = {
   email: 'chidimma@gmail.com',
   password: process.env.SECRET,
-}
+};
 
-before('get user token', async () => {
-  const result = await chai
-    .request(app)
+before('get user token', (done) => {
+  chai.request(app)
     .post(`${endPoint}/auth/signin`)
-    .send(User);
-  token = result.headers.authorization;
+    .send(seededUser)
+    .end((err, res) => {
+      token = res.headers.authorization;
+      done();
+    });
 });
 
 describe('POST /api/v1/auth/signup', () => {
@@ -28,6 +29,7 @@ describe('POST /api/v1/auth/signup', () => {
     chai
       .request(app)
       .post(`${endPoint}/auth/signup`)
+      .set('Authorization', token)
       .send(user)
       .end((_err, res) => {
         expect(res).to.have.status(201);
@@ -47,6 +49,7 @@ describe('POST /api/v1/auth/signup', () => {
     chai
       .request(app)
       .post(`${endPoint}/auth/signup`)
+      .set('Authorization', token)
       .send(user)
       .end((_err, res) => {
         expect(res).to.have.status(409);
@@ -63,6 +66,7 @@ describe('POST /api/v1/auth/signup', () => {
     };
     chai.request(app)
       .post('/api/v1/auth/signup')
+      .set('Authorization', token)
       .send(user)
       .end((err, res) => {
         expect(res).to.have.status(422);
@@ -165,14 +169,16 @@ describe('GET /api/v1/user/linkedin/signin', () => {
 });
 describe('/POST api/v1/user/update-profile', () => {
   const userDetails = {
-    firstName: 'John',
-    lastName: 'Doe',
+    firstName: 'john',
+    lastName: 'doe',
     password: 'newpassword',
     phoneNumber: 1234567798,
     gender: 'male',
-    preferredLanguage: 'Engliish',
+    preferredLanguage: 'engliish',
     preferredCurrency: '$',
     department: 'IT',
+    birthDate: '22-08-1893',
+    residenceAddress: 'jeremiah Ugwu, Lekki'
   };
   it('it should return a 201 response upon authorization', (done) => {
     chai
@@ -184,6 +190,31 @@ describe('/POST api/v1/user/update-profile', () => {
         expect(res.body.status).to.be.equal('success');
         expect(res.body).to.have.property('data');
         expect(res.body).to.be.a('object');
+        expect(res.body.data).to.be.a('object');
+        expect(res.body.data).to.have.property('firstName');
+        expect(res.body.data.firstName).to.be.equal('john');
+        expect(res.body.data).to.have.property('lastName');
+        expect(res.body.data.lastName).to.be.equal('doe');
+        expect(res.body.data).to.have.property('gender');
+        expect(res.body.data.gender).to.be.equal('male');
+        expect(res.body.data).to.have.property('department');
+        expect(res.body.data.department).to.be.equal('IT');
+        expect(res.body.data).to.have.property('phoneNumber');
+        expect(res.body.data.phoneNumber).to.be.equal('1234567798');
+        done();
+      });
+  });
+  it('it should return a 401 response without authorization', (done) => {
+    chai
+      .request(app)
+      .patch(`${endPoint}/auth/user/update-profile`)
+      .send(userDetails)
+      .end((_err, res) => {
+        expect(res).to.have.status(401);
+        expect(res.body.status).to.be.equal(401);
+        expect(res.body).to.have.property('error');
+        expect(res.body.error).to.be.a('string');
+        expect(res.body.error).to.include('invalid request, token missing.');
         done();
       });
   });

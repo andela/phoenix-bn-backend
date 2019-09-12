@@ -1,6 +1,6 @@
 export default (sequelize, DataTypes) => {
   const Role = sequelize.define('Role', {
-    administrator: {
+    roleName: {
       allowNull: true,
       type: DataTypes.STRING
     },

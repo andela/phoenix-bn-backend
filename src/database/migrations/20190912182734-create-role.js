@@ -6,7 +6,7 @@ module.exports = {
       primaryKey: true,
       type: Sequelize.INTEGER
     },
-    administrator: {
+    roleName: {
       type: Sequelize.STRING
     },
     createdAt: {
