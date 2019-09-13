@@ -25,5 +25,18 @@ const tripInputValidation = [
     .withMessage('Reason for travel field cannot be empty'),
 ];
 
+const multiCityTripInputValidation = [
+  check('origin').trim().not().isEmpty()
+    .withMessage('Origin field cannot be empty'),
+  check('destination').trim().not().isEmpty()
+    .withMessage('Destination field cannot be empty'),
+  check('accommodation').trim().not().isEmpty()
+    .withMessage('Accomodation field cannot be empty'),
+  check('travelDate').trim().not().isEmpty()
+    .withMessage('Date of travel field cannot be empty'),
+  check('travelReasons').trim().not().isEmpty()
+    .withMessage('Reason for travel field cannot be empty'),
+];
 
-export default { dateFormat, tripInputValidation };
+
+export default { dateFormat, tripInputValidation, multiCityTripInputValidation };
