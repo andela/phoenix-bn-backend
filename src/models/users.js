@@ -22,6 +22,11 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       defaultValue: sequelize.fn('NOW')
     },
+    rememberInfo: {
+      allowNull: true,
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
     phoneNumber: {
       allowNull: true,
       type: DataTypes.STRING
@@ -56,9 +61,11 @@ export default (sequelize, DataTypes) => {
     }
   });
   Users.associate = (models) => {
-    Users.hasMany(models.Roles, {
-      foreignKey: 'userEmail',
-      sourceKey: 'email'
+    Users.belongsToMany(models.Roles, {
+      through: 'UsersRoles',
+      as: 'roles',
+      foreignKey: 'userId',
+      otherKey: 'roleId'
     });
   };
   return Users;

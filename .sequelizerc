@@ -1,6 +1,8 @@
 'use strict';
-require('dotenv').config();
+const dotenv = require('dotenv');
 const path = require('path');
+
+dotenv.config();
 
 if(process.env.NODE_ENV != 'production'){
   require('@babel/register');

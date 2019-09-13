@@ -85,7 +85,7 @@
                     "User"
                 ],
                 "summary": "Logs user into the system",
-                "description": "",
+                "description": "Logs user into the system",
                 "operationId": "loginUser",
                 "produces": [
                     "application/json"
@@ -93,7 +93,7 @@
                 "parameters": [
                     {
                         "in": "body",
-                        "name": "signup",
+                        "name": "signin",
                         "schema": {
                             "type": "object",
                             "properties": {
@@ -113,11 +113,38 @@
                     "200": {
                         "description": "successful operation",
                         "schema": {
-                            "$ref": "#/definitions/User"
+                            "$ref": "#/definitions/SignedUser"
                         }
                     },
-                    "400": {
-                        "description": "User not found"
+                    "422": {
+                        "description": "invalid email",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "status": "422",
+                                "error": "no email provided"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "wrong password",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "status": "401",
+                                "error": "Invalid email/password"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "email not in database",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "status": "404",
+                                "error": "User does not exist"
+                            }
+                        }
                     }
                 }
             }
@@ -253,6 +280,67 @@
                 }
             }
         },
+        "/api/v1/trip": {
+            "post": {
+                "tags": [
+                    "Trip"
+                ],
+                "summary": "Make a one way trip",
+                "description": "Allows a user to make a one way trip",
+                "operationId": "CreateTrip",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "trip",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "origin": {
+                                    "type": "string",
+                                    "example": "Lagos"
+                                },
+                                "destination": {
+                                    "type": "string",
+                                    "example": "Abuja"
+                                },
+                                "travelDate": {
+                                    "type": "date",
+                                    "example": "2019-11-08"
+                                },
+                                "travelReasons": {
+                                    "type": "string",
+                                    "example": "For Assignment"
+                                },
+                                "accommodation": {
+                                    "type": "string",
+                                    "example": "Protea"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "406": {
+                        "description": "Invalid date"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "422": {
+                        "description": "Invalid input"
+                    }
+                }
+            }
+        },
         "/api/v1/auth/linkedin/callback": {
             "get": {
                 "tags": [
@@ -280,6 +368,117 @@
                     },
                     "404": {
                         "description": "User not found"
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/remember-info": {
+            "patch": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "user remember info",
+                "description": "Allows a user to remember his info for future requests",
+                "operationId": "rememberInfo",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "user",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "rememberInfo": {
+                                    "type": "string",
+                                    "example": true
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/Success"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/role": {
+            "post": {
+                "tags": [
+                    "Role"
+                ],
+                "summary": "user's role",
+                "description": "sets a role for an existing user",
+                "operationId": "createRole",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "email",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "createRole": {
+                                    "$ref": "#/definitions/CreateRole"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/Role"
+                        }
+                    },
+                    "403": {
+                        "description": "unauthorized access",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "status": "403",
+                                "error": "You are not allowed to perform this operation"
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "invalid email",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "status": "422",
+                                "error": "no email provided"
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "role already exist for user with provided email",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "status": "409",
+                                "error": "User already has this role"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "email not in database",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "status": "404",
+                                "error": "User does not exist"
+                            }
+                        }
                     }
                 }
             }
@@ -357,6 +556,124 @@
             },
             "xml": {
                 "name": "User"
+            }
+        },
+        "AddUser": {
+            "type": "object",
+            "properties": {
+                "firstName": {
+                    "type": "string",
+                    "example": "John"
+                },
+                "lastName": {
+                    "type": "string",
+                    "description": "User's first name",
+                    "example": "Doe"
+                },
+                "email": {
+                    "type": "string",
+                    "description": "User's email",
+                    "example": "johndoe@company.com"
+                },
+                "password": {
+                    "type": "string",
+                    "description": "User's password",
+                    "exmaple": "45678hpkfg45"
+                },
+                "phoneNumber": {
+                    "type": "string",
+                    "description": "Address of WeTravel User",
+                    "example": "09023232322"
+                }
+            }
+        },
+        "SigninUser": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "johndoe@mail.com"
+                },
+                "password": {
+                    "type": "string",
+                    "description": "User password",
+                    "example": "45678hpkfg45"
+                }
+            }
+        },
+        "SignedUser": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "$ref": "#/definitions/Token"
+                }
+            }
+        },
+        "Token": {
+            "type": "string",
+            "description": "Authentication token",
+            "example": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZW1haWwiOiJ0aG9ueUBnbWFpbC5jb20iLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNTYxMTYyMTY0LCJleHAiOjE1NjEyNDg1NjR9.jx2qbXyui03Dhb9F8iwwbMel9LMYIShLYr5Y5y94BtU"
+        },
+        "email": {
+            "type": "string",
+            "description": "user email",
+            "example": "johndoe@company.com"
+        },
+        "role": {
+            "type": "string",
+            "description": "user role",
+            "example": "Requester, Super Administator, Manager"
+        },
+        "Role": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "description": "role id",
+                    "example": "2"
+                },
+                "userId": {
+                    "type": "integer",
+                    "description": "user id of the owner of the role",
+                    "example": "9"
+                },
+                "userEmail": {
+                    "$ref":"#/definitions/email"
+                },
+                "roleName": {
+                    "$ref":"#/definitions/role"
+                },
+                "createdAt": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "updatedAt": {
+                    "type": "string",
+                    "format": "date-time"
+                }
+            }
+        },
+        "CreateRole": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "$ref": "#/definitions/email"
+                },
+                "role": {
+                    "$ref":"#/definitions/role"
+                }
+            }
+        },
+        "Success": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "type": "string",
+                    "description": "success"
+                }
+            },
+            "xml": {
+                "name": "Success"
             }
         },
         "externalDocs": {

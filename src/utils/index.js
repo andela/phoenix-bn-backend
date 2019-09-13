@@ -57,7 +57,7 @@ class Utils {
    * @param { String } sentToken
    * @returns { Object } decoded
    */
-  static verifyToken(sentToken) {
+  static verifyTokenForAdmin(sentToken) {
     try {
       const decoded = jwt.verify(sentToken, process.env.SECRET);
       return decoded;
@@ -125,6 +125,17 @@ class Utils {
       myRoles.push(roles[i].roleName);
     }
     return myRoles;
+  }
+
+  /**
+   * decodeToken
+   * @description decodes the token and returns the corresponding payload
+   * @param { String } token
+   * @returns { Object } payload - { id, email, isAdmin }
+   * @memberof Utils
+   */
+  static decodeToken(token) {
+    return jwt.verify(token, process.env.SECRET);
   }
 }
 

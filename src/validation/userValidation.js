@@ -8,9 +8,6 @@ const userValidation = [
     .withMessage('First name field cannot be empty.'),
   check('lastName').trim().not().isEmpty()
     .withMessage('last name field cannot be empty.'),
-  check('userName').trim().not().isEmpty()
-    .withMessage('username field cannot be empty.'),
-  check('userName').isAlphanumeric().withMessage('username should contain only letters and numbers'),
   check('email').trim().not().isEmpty()
     .withMessage('Email field cannot be empty'),
   check('email').isEmail().withMessage('Enter valid email address.'),
@@ -40,33 +37,15 @@ const emailValidation = [
   check('email').normalizeEmail(),
 ];
 
-/**
- * @name sentUserRoleValidation
- * @description validate sent user role
- * @param {object} req The request object
- * @param {object} res The response object
- * @param {object} next The response object
- * @returns {object} The API response or next()
- */
-const sentUserRoleValidation = (req, res, next) => {
-  try {
-    let role = 'Requester';
-    if (req.body.role) role = req.body.role.toLowerCase();
-    if (role !== 'Requester'
-      && role !== 'requester'
-      && role !== 'manager'
-      && role !== 'traval team member'
-      && role !== 'travel administrator'
-      && role !== 'super admonistrator') {
-      return resError(res, 400, 'Incorrect role type sent.');
-    }
-    req.body.role = role.charAt(0).toUpperCase() + role.slice(1);
-    return next();
-  } catch (error) {
-    resError(res, 500, error.message);
-  }
-};
+const rememberInfoValidation = [
+  check('rememberInfo').trim().not().isEmpty()
+    .withMessage('rememberInfo field cannot be empty'),
+  check('rememberInfo').isBoolean().withMessage('rememberInfo should be a boolean'),
+];
 
 export default {
-  userValidation, userLoginValidation, emailValidation, sentUserRoleValidation,
+  emailValidation,
+  userValidation,
+  userLoginValidation,
+  rememberInfoValidation,
 };

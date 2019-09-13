@@ -1,4 +1,3 @@
-import rolesServices from '../services/RolesServices';
 import ResponseMsg from '../utils/responseMessages';
 import Utils from '../utils';
 
@@ -18,8 +17,8 @@ export default class RolesMiddlewares {
  */
   static async checkRoleExistForUser(req, res, next) {
     try {
-      const { email, role } = req.body;
-      const roles = await rolesServices.getRolesByUserEmail(email);
+      const { role } = req.body;
+      const { roles } = req.user;
       const userRoles = Utils.extractRoles(roles);
       if (!userRoles.includes(role)) {
         return next();

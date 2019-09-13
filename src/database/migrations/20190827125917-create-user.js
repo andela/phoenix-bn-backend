@@ -9,23 +9,15 @@ module.exports = {
     firstName: {
       allowNull: true,
       type: Sequelize.STRING,
-      validate: {
-        notNull: false,
-      },
     },
     lastName: {
       allowNull: true,
       type: Sequelize.STRING,
-      validate: {
-        notNull: false,
-      },
     },
     password: {
       allowNull: true,
       type: Sequelize.STRING,
-      validate: {
-        notNull: false,
-      },
+      defaultValue: 'password',
     },
     lastLogin: {
       allowNull: true,
@@ -34,16 +26,21 @@ module.exports = {
     email: {
       allowNull: false,
       type: Sequelize.STRING,
-      unique: true,
+      unique: { args: true, msg: 'This email is already registered. Login.' },
       validate: {
         isEmail: true,
-      }
+      },
     },
     phoneNumber: {
       allowNull: true,
       type: Sequelize.STRING,
+    },
+    rememberInfo: {
+      allowNull: true,
+      type: Sequelize.BOOLEAN,
+      defaultValue: false,
       validate: {
-        notNull: false,
+        notNull: true,
       },
     },
     gender: {

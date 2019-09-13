@@ -20,4 +20,7 @@ script:
 after_success:
   - npm run coverage
 
+env:
+  -NODE_ENV=test
+
 

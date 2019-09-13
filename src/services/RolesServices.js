@@ -11,18 +11,14 @@ export default class RoleServices {
  * @returns {object} return the updated field
  */
   static async createRole(roleData) {
-    const { dataValues } = await models.Roles.create(roleData);
-    return dataValues;
-  }
-
-  /**
- * @name getRoleByUserEmail
- * @description Interacts with model to get a role by user's email
- * @param { string } email the user's data
- * @returns {object} return the updated field
- */
-  static async getRolesByUserEmail(email) {
-    const data = await models.Roles.findAll({ where: { userEmail: email } });
-    return data;
+    const role = await models.Roles.create({ roleName: roleData.roleName })
+      .then(async (result) => {
+        await models.UsersRoles.create({
+          userId: roleData.userId,
+          roleId: result.dataValues.id
+        });
+        return result.dataValues;
+      });
+    return role;
   }
 }

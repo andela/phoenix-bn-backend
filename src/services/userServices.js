@@ -11,20 +11,18 @@ export default class UserServices {
    * @returns {object} return the updated field
    */
   static async createUser(userData) {
+    const { email, password, role } = userData;
     const user = await models.sequelize.transaction(async (t) => {
-      const m = await models.Users.create(userData, { transaction: t });
-      return m;
-    }).then(async (result) => {
-      const { dataValues } = result;
-      const roleData = {
-        userId: dataValues.id,
-        userEmail: dataValues.email,
-        roleName: userData.role
-      };
-      const role = await models.Roles.create(roleData);
-      delete dataValues.password;
-      dataValues.Roles = role.dataValues;
-      return dataValues;
+      const newUser = await models.Users.create({ email, password }, { transaction: t })
+        .then((result) => result.dataValues);
+      const userId = newUser.id;
+      const newRole = await models.Roles.create({ roleName: role }, { transaction: t })
+        .then((result) => result.dataValues);
+      const roleId = newRole.id;
+      await models.UsersRoles.create({ userId, roleId }, { transaction: t })
+        .then((result) => result.dataValues);
+      newUser.roles = newRole.roleName;
+      return newUser;
     });
     return user;
   }
@@ -38,10 +36,23 @@ export default class UserServices {
   static async getUserByEmail(email) {
     const data = await models.Users.findOne({
       where: { email },
-      include: [
-        { model: models.Roles, where: { userEmail: email } }
-      ]
+      include: [{
+        model: models.Roles,
+        as: 'roles'
+      }]
     });
     return data;
+  }
+
+  /**
+   * @name UpdateRememberInfo
+   * @description Updates the remember info column in the user's table
+   * @param { string } id the user's id
+   * @param { object } rememberInfo the field to be updated with the value
+   * @returns {object} return the user's data
+   */
+  static async UpdateRememberInfo(id, rememberInfo) {
+    const data = await models.Users.update({ rememberInfo }, { where: { id } });
+    if (data[0] === 0) throw new Error('could not update user field');
   }
 }

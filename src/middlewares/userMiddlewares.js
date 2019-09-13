@@ -43,7 +43,7 @@ export default class UserMiddlewares {
         return resError(res, 401, 'No authorization token was sent');
       }
       token = sentToken.slice(7, sentToken.length);
-      const jwt = Utils.verifyToken(token);
+      const jwt = Utils.verifyTokenForAdmin(token);
       if (jwt.roles.includes('Super Administrator')) {
         return next();
       }

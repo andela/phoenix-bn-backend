@@ -1,4 +1,4 @@
-import UserServices from '../services/RolesServices';
+import RolesServices from '../services/RolesServices';
 import ResponseMsg from '../utils/responseMessages';
 
 const { resSuccess, resError } = ResponseMsg;
@@ -15,14 +15,13 @@ export default class RolesController {
    */
   static async createRole(req, res) {
     try {
-      const { email, role } = req.body;
+      const { role } = req.body;
       const { id } = req.user;
       const roleData = {
         userId: id,
-        userEmail: email,
         roleName: role
       };
-      const data = await UserServices.createRole(roleData);
+      const data = await RolesServices.createRole(roleData);
       return resSuccess(res, 201, data);
     } catch (error) {
       return resError(res, 500, error.message);

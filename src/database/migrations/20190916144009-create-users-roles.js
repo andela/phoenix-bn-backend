@@ -1,12 +1,13 @@
+
 module.exports = {
-  up: (queryInterface, Sequelize) => queryInterface.createTable('Roles', {
+  up: (queryInterface, Sequelize) => queryInterface.createTable('UsersRoles', {
     id: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
       type: Sequelize.INTEGER
     },
-    /* userId: {
+    userId: {
       allowNull: false,
       type: Sequelize.INTEGER,
       onDelete: 'CASCADE',
@@ -16,33 +17,30 @@ module.exports = {
       },
       validate: {
         notNull: true,
-      },
-    }, */
-    /* userEmail: {
+      }
+    },
+    roleId: {
       allowNull: false,
-      type: Sequelize.STRING,
+      type: Sequelize.INTEGER,
       onDelete: 'CASCADE',
       references: {
-        model: 'Users',
-        key: 'email',
+        model: 'Roles',
+        key: 'id'
       },
       validate: {
         notNull: true,
-        isEmail: true,
-      },
-    }, */
-    roleName: {
-      type: Sequelize.STRING,
-      defaultValue: 'Requester',
+      }
     },
     createdAt: {
       allowNull: false,
-      type: Sequelize.DATE
+      type: Sequelize.DATE,
+      defaultValue: Sequelize.NOW
     },
     updatedAt: {
       allowNull: false,
-      type: Sequelize.DATE
+      type: Sequelize.DATE,
+      defaultValue: Sequelize.NOW
     }
   }),
-  down: (queryInterface, Sequelize) => queryInterface.dropTable('Roles')
+  down: (queryInterface, Sequelize) => queryInterface.dropTable('UsersRoles')
 };

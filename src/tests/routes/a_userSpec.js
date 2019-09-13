@@ -1,7 +1,7 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import dotenv from 'dotenv';
-import app from '..';
+import app from '../..';
 
 dotenv.config();
 
@@ -9,6 +9,21 @@ chai.use(chaiHttp);
 const { expect } = chai;
 const endPoint = '/api/v1';
 
+let token;
+const seededUser = {
+  email: 'chidimma@gmail.com',
+  password: process.env.SECRET,
+};
+
+before('get user token', (done) => {
+  chai.request(app)
+    .post(`${endPoint}/auth/signin`)
+    .send(seededUser)
+    .end((err, res) => {
+      token = res.headers.authorization;
+      done();
+    });
+});
 
 describe('POST /api/v1/auth/signin', () => {
   const admin = {
@@ -227,6 +242,51 @@ describe('GET /api/v1/user/linkedin/signin', () => {
         expect(res.body.status).to.be.equal('success');
         expect(res.body).to.have.property('data');
         expect(res.body).to.be.a('object');
+        done();
+      });
+  });
+});
+
+describe('GET /api/v1/user/google/signin', () => {
+  it('should create an authentication url and return 200', (done) => {
+    chai
+      .request(app)
+      .get(`${endPoint}/auth/user/google/signin`)
+      .end((_err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body.status).to.be.equal('success');
+        expect(res.body).to.have.property('data');
+        expect(res.body).to.be.a('object');
+        done();
+      });
+  });
+});
+describe('GET /api/v1/user/linkedin/signin', () => {
+  it('should create an authentication url and return 200', (done) => {
+    chai
+      .request(app)
+      .get(`${endPoint}/auth/user/google/signin`)
+      .end((_err, res) => {
+        expect(res.body.status).to.be.equal('success');
+        expect(res.body).to.have.property('data');
+        expect(res.body).to.be.a('object');
+        done();
+      });
+  });
+});
+describe('PATCH /api/v1/auth/remember-info', () => {
+  it('should allow a user opt for saving profile information for future requests', (done) => {
+    const data = {
+      rememberInfo: false,
+    };
+    chai
+      .request(app)
+      .patch(`${endPoint}/auth/remember-info`)
+      .set('Authorization', token)
+      .send(data)
+      .end((_err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body.status).to.be.equal('success');
         done();
       });
   });

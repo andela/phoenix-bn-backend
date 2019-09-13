@@ -1,77 +1,92 @@
+
 module.exports = {
-  up: (queryInterface, Sequelize) => queryInterface.bulkInsert('Roles',
+  up: (queryInterface, Sequelize) => queryInterface.bulkInsert('UsersRoles',
     [
       {
-        roleName: 'Super Administrator',
+        userId: 1,
+        roleId: 1,
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
-        roleName: 'Manager',
+        userId: 1,
+        roleId: 2,
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
-        roleName: 'Super Administrator',
+        userId: 2,
+        roleId: 3,
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
-        roleName: 'Manager',
+        userId: 3,
+        roleId: 4,
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
-        roleName: 'Requester',
+        userId: 3,
+        roleId: 5,
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
-        roleName: 'Requester',
+        userId: 4,
+        roleId: 6,
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
-        roleName: 'Manager',
+        userId: 5,
+        roleId: 7,
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
-        roleName: 'Travel Administrator',
+        userId: 5,
+        roleId: 8,
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
-        roleName: 'Travel Team Member',
+        userId: 5,
+        roleId: 9,
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
-        roleName: 'Requester',
+        userId: 5,
+        roleId: 10,
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
-        roleName: 'Travel Team Member',
+        userId: 6,
+        roleId: 11,
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
-        roleName: 'Requester',
+        userId: 6,
+        roleId: 12,
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
-        roleName: 'Travel Team Member',
+        userId: 7,
+        roleId: 13,
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
-        roleName: 'Requester',
+        userId: 7,
+        roleId: 14,
         createdAt: new Date(),
         updatedAt: new Date()
-      }
+      },
     ], {}),
 
-  down: (queryInterface, Sequelize) => queryInterface.bulkDelete('Roles', null, {})
+  down: (queryInterface, Sequelize) => queryInterface.bulkDelete('UsersRoles', null, {})
 };

@@ -14,7 +14,7 @@ const redirect = process.env.LINKENDIN_REDIRECT_URL;
 const Linkedin = Linkedn(clientId, clientSecret, redirect);
 
 
-const { resSuccess, resError } = ResponseMsg;
+const { resSuccess, resSuccessShort, resError } = ResponseMsg;
 /**
  * User controller Class
  */
@@ -32,6 +32,10 @@ export default class UserController {
       const randomPassword = process.env.SECRET; // Utils.randomPassword();
       const password = Utils.hashPassword(randomPassword);
       const data = await UserServices.createUser({ email, password, role });
+      const { id } = data;
+      delete data.password;
+      const token = Utils.generateToken({ id, email, roles: role });
+      res.set('Authorization', `Bearer ${token}`);
       return resSuccess(res, 201, data);
     } catch (error) {
       return resError(res, 500, error.message);
@@ -49,19 +53,16 @@ export default class UserController {
     try {
       const { user } = req;
       const { password } = req.body;
-      const isCorrectPassword = Utils.comparePassword(password, user.password);
-
-      if (isCorrectPassword) {
+      if (Utils.comparePassword(password, user.password)) {
         delete user.password;
-        const { id, email, Roles } = user;
-        const roles = Utils.extractRoles(Roles);
-        const token = Utils.generateToken({ id, roles, email });
+        const { id, email } = user;
+        let { roles } = user;
+        roles = Utils.extractRoles(roles);
+        const token = Utils.generateToken({ id, email, roles });
         res.set('Authorization', `Bearer ${token}`);
         return resSuccess(res, 200, user);
       }
-      if (!isCorrectPassword) {
-        return resError(res, 401, 'Inavalid email/password.');
-      }
+      return resError(res, 401, 'Inavalid email/password.');
     } catch (error) {
       return resError(res, 500, error.message);
     }
@@ -163,5 +164,23 @@ export default class UserController {
       });
       profileRequest.end();
     });
+  }
+
+  /**
+   * @name rememberInfo
+   * @param {*} req Request object
+   * @param {*} res Response object
+   * @return {json} Returns json object
+   * @memberof User
+   */
+  static async rememberInfo(req, res) {
+    const { id } = req.user;
+    const { rememberInfo } = req.body;
+    try {
+      await UserServices.UpdateRememberInfo(id, rememberInfo);
+      return resSuccessShort(res, 200);
+    } catch (error) {
+      return resError(res, 500, error.message);
+    }
   }
 }

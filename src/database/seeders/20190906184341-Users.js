@@ -1,5 +1,5 @@
-import bcrypt from 'bcryptjs';
 import { config } from 'dotenv';
+import Util from '../../utils';
 
 config();
 
@@ -11,8 +11,9 @@ module.exports = {
         firstName: 'Abel',
         lastName: 'Damina',
         email: 'abel@gmail.com',
-        password: bcrypt.hashSync(process.env.SECRET, bcrypt.genSaltSync(8)),
+        password: Util.hashPassword(process.env.SECRET),
         phoneNumber: 12345678,
+        rememberInfo: false,
         gender: 'male',
         birthdate: '01/02/1986',
         preferredLanguage: 'French',
@@ -27,8 +28,9 @@ module.exports = {
         firstName: 'Dafe',
         lastName: 'Anna',
         email: 'dafeanna@gmail.com',
-        password: bcrypt.hashSync(process.env.SECRET, bcrypt.genSaltSync(8)),
+        password: Util.hashPassword(process.env.SECRET),
         phoneNumber: 12345678,
+        rememberInfo: false,
         gender: 'male',
         birthdate: '01/02/1986',
         preferredLanguage: 'French',
@@ -43,8 +45,9 @@ module.exports = {
         firstName: 'Wetravel',
         lastName: 'user1',
         email: 'wetravel.user1@gmail.com',
-        password: bcrypt.hashSync(process.env.SECRET, bcrypt.genSaltSync(8)),
+        password: Util.hashPassword(process.env.SECRET),
         phoneNumber: 12345678,
+        rememberInfo: false,
         gender: 'male',
         birthdate: '01/02/1986',
         preferredLanguage: 'English',
@@ -59,8 +62,9 @@ module.exports = {
         firstName: 'chidi',
         lastName: 'nma',
         email: 'chidimma@gmail.com',
-        password: bcrypt.hashSync(process.env.SECRET, bcrypt.genSaltSync(8)),
+        password: Util.hashPassword(process.env.SECRET),
         phoneNumber: 12345678,
+        rememberInfo: false,
         gender: 'female',
         birthdate: '01/02/1986',
         preferredLanguage: 'French',
@@ -75,8 +79,9 @@ module.exports = {
         firstName: 'Tolu',
         lastName: 'nma',
         email: 'tolu@gmail.com',
-        password: bcrypt.hashSync(process.env.SECRET, bcrypt.genSaltSync(8)),
+        password: Util.hashPassword(process.env.SECRET),
         phoneNumber: 12345678,
+        rememberInfo: false,
         gender: 'female',
         birthdate: '01/02/1986',
         preferredLanguage: 'French',
@@ -91,8 +96,9 @@ module.exports = {
         firstName: 'Albert',
         lastName: 'Karl',
         email: 'albert@gmail.com',
-        password: bcrypt.hashSync(process.env.SECRET, bcrypt.genSaltSync(8)),
+        password: Util.hashPassword(process.env.SECRET),
         phoneNumber: 12345678,
+        rememberInfo: false,
         gender: 'male',
         birthdate: '01/02/1986',
         preferredLanguage: 'French',
@@ -107,8 +113,9 @@ module.exports = {
         firstName: 'Igbokwe',
         lastName: 'Fred',
         email: 'igbokwe@gmail.com',
-        password: bcrypt.hashSync(process.env.SECRET, bcrypt.genSaltSync(8)),
+        password: Util.hashPassword(process.env.SECRET),
         phoneNumber: 12345678,
+        rememberInfo: false,
         gender: 'female',
         birthdate: '01/02/1986',
         preferredLanguage: 'French',
@@ -122,5 +129,5 @@ module.exports = {
     ],
     {}
   ),
-  down: (queryInterface, Sequelize) => queryInterface.bulkDelete('Users', null, {})
+  down: (queryInterface) => queryInterface.bulkDelete('Users', null, {})
 };

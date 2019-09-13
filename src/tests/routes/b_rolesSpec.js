@@ -1,7 +1,7 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import dotenv from 'dotenv';
-import app from '..';
+import app from '../..';
 
 dotenv.config();
 
@@ -10,10 +10,6 @@ const { expect } = chai;
 const endPoint = '/api/v1';
 
 describe('POST /api/v1/role', () => {
-  const admin = {
-    email: 'abel@gmail.com',
-    password: process.env.SECRET
-  };
   const role = {
     email: 'example@gmail.com',
     role: 'manager'
