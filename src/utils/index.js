@@ -113,6 +113,19 @@ class Utils {
   /* static randomPassword() {
    return Math.random().toString(36).slice(3);
  } */
+  /**
+  * @name extractRoles
+  * @description gets all user's role from the Roles array
+  * @param { Array } roles
+  * @returns { Array } all user's roles
+  */
+  static extractRoles(roles) {
+    const myRoles = [];
+    for (let i = 0; i < roles.length; i += 1) {
+      myRoles.push(roles[i].roleName);
+    }
+    return myRoles;
+  }
 }
 
 export default Utils;

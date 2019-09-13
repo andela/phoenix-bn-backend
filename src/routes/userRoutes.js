@@ -1,11 +1,7 @@
 import express from 'express';
 import UserController from '../controllers/UserController';
 import UserMiddlewares from '../middlewares/UserMiddlewares';
-import {
-  userSignupValidation,
-  userLoginValidation,
-  sentUserRoleValidation,
-} from '../validation/userValidation';
+import userValidations from '../validation/userValidation';
 import validationHandler from '../validation/validationHandler';
 
 const userRoutes = express.Router();
@@ -19,14 +15,13 @@ const {
   getLinkedinAccountFromCode,
 } = UserController;
 
-const { checkUserExists, checkUserExistBeforeLogin } = UserMiddlewares;
+const { checkUserExists, checkUserExistBeforeLogin, checkUserIsSuperAdmin } = UserMiddlewares;
+const { emailValidation, userLoginValidation, sentUserRoleValidation } = userValidations;
 
 userRoutes.post('/signup',
-  userSignupValidation,
-  sentUserRoleValidation,
-  validationHandler, checkUserExists, createUser);
+  emailValidation,
+  validationHandler, checkUserIsSuperAdmin, sentUserRoleValidation, checkUserExists, createUser);
 userRoutes.post('/signin', userLoginValidation, validationHandler, checkUserExistBeforeLogin, login);
-
 userRoutes.get('/user/google/signin', getGoogleUrl);
 userRoutes.get('/google/callback', getGoogleAccountFromCode);
 userRoutes.get('/user/linkedin/signin', getLinkedinUrl);

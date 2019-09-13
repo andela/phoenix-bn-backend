@@ -33,34 +33,6 @@ const userLoginValidation = [
   check('password').isAlphanumeric().withMessage('Password should contain only letters and numbers'),
 ];
 
-
-const userLoginValidation = [
-  check('email').trim().not().isEmpty()
-    .withMessage('Email field cannot be empty'),
-  check('email').isEmail().withMessage('Enter valid email address.'),
-  check('email').normalizeEmail(),
-];
-
-export const sentUserRoleValidation = (res, req, next) => {
-  try {
-    const { role } = req.body;
-    const sentRole = role.toLowerCase();
-    if (sentRole === '') {
-      req.body.role = 'requester';
-      next();
-    } else if (sentRole !== ''
-      && sentRole !== 'manager'
-      && sentRole !== 'traval team member'
-      && sentRole !== 'travel administrator'
-      && sentRole !== 'super admonistrator') {
-      return resError(res, 400, 'Incorrect role type sent.');
-    }
-    next();
-  } catch (error) {
-    resError(res, 500, error.message);
-  }
-};
-
 const emailValidation = [
   check('email').trim().not().isEmpty()
     .withMessage('Email field cannot be empty'),
@@ -68,4 +40,33 @@ const emailValidation = [
   check('email').normalizeEmail(),
 ];
 
-export default { emailValidation, userValidation, userLoginValidation };
+/**
+ * @name sentUserRoleValidation
+ * @description validate sent user role
+ * @param {object} req The request object
+ * @param {object} res The response object
+ * @param {object} next The response object
+ * @returns {object} The API response or next()
+ */
+const sentUserRoleValidation = (req, res, next) => {
+  try {
+    let role = 'Requester';
+    if (req.body.role) role = req.body.role.toLowerCase();
+    if (role !== 'Requester'
+      && role !== 'requester'
+      && role !== 'manager'
+      && role !== 'traval team member'
+      && role !== 'travel administrator'
+      && role !== 'super admonistrator') {
+      return resError(res, 400, 'Incorrect role type sent.');
+    }
+    req.body.role = role.charAt(0).toUpperCase() + role.slice(1);
+    return next();
+  } catch (error) {
+    resError(res, 500, error.message);
+  }
+};
+
+export default {
+  userValidation, userLoginValidation, emailValidation, sentUserRoleValidation,
+};

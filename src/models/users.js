@@ -1,5 +1,5 @@
 export default (sequelize, DataTypes) => {
-  const User = sequelize.define('User', {
+  const Users = sequelize.define('Users', {
     email: {
       allowNull: false,
       type: DataTypes.STRING,
@@ -55,11 +55,11 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
     }
   });
-  User.associate = (models) => {
-    User.belongsToMany(models.Role, {
-      through: 'UserRole',
-      foreignKey: 'userId',
+  Users.associate = (models) => {
+    Users.hasMany(models.Roles, {
+      foreignKey: 'userEmail',
+      sourceKey: 'email'
     });
   };
-  return User;
+  return Users;
 };

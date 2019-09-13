@@ -1,16 +1,17 @@
+import bcrypt from 'bcryptjs';
 import { config } from 'dotenv';
 
 config();
 
 module.exports = {
   up: (queryInterface, Sequelize) => queryInterface.bulkInsert(
-    'User',
+    'Users',
     [
       {
         firstName: 'Abel',
         lastName: 'Damina',
-        email: 'Abel@gmail.com',
-        password: process.env.SECRET,
+        email: 'abel@gmail.com',
+        password: bcrypt.hashSync(process.env.SECRET, bcrypt.genSaltSync(8)),
         phoneNumber: 12345678,
         gender: 'male',
         birthdate: '01/02/1986',
@@ -26,7 +27,7 @@ module.exports = {
         firstName: 'Dafe',
         lastName: 'Anna',
         email: 'dafeanna@gmail.com',
-        password: process.env.SECRET,
+        password: bcrypt.hashSync(process.env.SECRET, bcrypt.genSaltSync(8)),
         phoneNumber: 12345678,
         gender: 'male',
         birthdate: '01/02/1986',
@@ -42,7 +43,7 @@ module.exports = {
         firstName: 'Wetravel',
         lastName: 'user1',
         email: 'wetravel.user1@gmail.com',
-        password: process.env.SECRET,
+        password: bcrypt.hashSync(process.env.SECRET, bcrypt.genSaltSync(8)),
         phoneNumber: 12345678,
         gender: 'male',
         birthdate: '01/02/1986',
@@ -58,7 +59,7 @@ module.exports = {
         firstName: 'chidi',
         lastName: 'nma',
         email: 'chidimma@gmail.com',
-        password: process.env.SECRET,
+        password: bcrypt.hashSync(process.env.SECRET, bcrypt.genSaltSync(8)),
         phoneNumber: 12345678,
         gender: 'female',
         birthdate: '01/02/1986',
@@ -74,7 +75,7 @@ module.exports = {
         firstName: 'Tolu',
         lastName: 'nma',
         email: 'tolu@gmail.com',
-        password: process.env.SECRET,
+        password: bcrypt.hashSync(process.env.SECRET, bcrypt.genSaltSync(8)),
         phoneNumber: 12345678,
         gender: 'female',
         birthdate: '01/02/1986',
@@ -90,7 +91,7 @@ module.exports = {
         firstName: 'Albert',
         lastName: 'Karl',
         email: 'albert@gmail.com',
-        password: process.env.SECRET,
+        password: bcrypt.hashSync(process.env.SECRET, bcrypt.genSaltSync(8)),
         phoneNumber: 12345678,
         gender: 'male',
         birthdate: '01/02/1986',
@@ -106,7 +107,7 @@ module.exports = {
         firstName: 'Igbokwe',
         lastName: 'Fred',
         email: 'igbokwe@gmail.com',
-        password: process.env.SECRET,
+        password: bcrypt.hashSync(process.env.SECRET, bcrypt.genSaltSync(8)),
         phoneNumber: 12345678,
         gender: 'female',
         birthdate: '01/02/1986',
@@ -121,5 +122,5 @@ module.exports = {
     ],
     {}
   ),
-  down: (queryInterface, Sequelize) => queryInterface.bulkDelete('User', null, {})
+  down: (queryInterface, Sequelize) => queryInterface.bulkDelete('Users', null, {})
 };

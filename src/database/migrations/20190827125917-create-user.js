@@ -1,5 +1,5 @@
 module.exports = {
-  up: (queryInterface, Sequelize) => queryInterface.createTable('User', {
+  up: (queryInterface, Sequelize) => queryInterface.createTable('Users', {
     id: {
       allowNull: false,
       autoIncrement: true,
@@ -49,30 +49,51 @@ module.exports = {
     gender: {
       allowNull: true,
       type: Sequelize.STRING,
+      validate: {
+        notNull: false,
+      },
     },
     birthdate: {
       allowNull: true,
       type: Sequelize.DATEONLY,
+      validate: {
+        notNull: false,
+      },
     },
     preferredLanguage: {
       allowNull: true,
       type: Sequelize.STRING,
+      validate: {
+        notNull: false,
+      },
     },
     preferredCurrency: {
       allowNull: true,
       type: Sequelize.STRING,
+      validate: {
+        notNull: false,
+      },
     },
     address: {
       allowNull: true,
       type: Sequelize.STRING,
+      validate: {
+        notNull: false,
+      },
     },
     department: {
       allowNull: true,
       type: Sequelize.STRING,
+      validate: {
+        notNull: false,
+      },
     },
     lineManager: {
       allowNull: true,
       type: Sequelize.INTEGER,
+      validate: {
+        notNull: false,
+      },
     },
     createdAt: {
       allowNull: false,
@@ -85,5 +106,5 @@ module.exports = {
       defaultValue: Sequelize.NOW
     }
   }),
-  down: (queryInterface) => queryInterface.dropTable('User')
+  down: (queryInterface) => queryInterface.dropTable('Users')
 };
