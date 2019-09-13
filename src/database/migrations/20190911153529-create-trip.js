@@ -26,6 +26,12 @@ module.exports = {
       allowNull: false,
       type: Sequelize.DATE
     },
+    status: {
+      allowNull: false,
+      type: Sequelize.ENUM,
+      values: ['accepted', 'rejected', 'pending'],
+      defaultValue: 'pending',
+    },
     userId: {
       type: Sequelize.INTEGER,
       references: {
