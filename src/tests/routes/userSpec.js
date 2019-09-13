@@ -167,3 +167,20 @@ describe('GET /api/v1/user/linkedin/signin', () => {
       });
   });
 });
+describe('PATCH /api/v1/auth/remember-info', () => {
+  it('should allow a user opt for saving profile information for future requests', (done) => {
+    const data = {
+      rememberInfo: false,
+    };
+    chai
+      .request(app)
+      .patch(`${endPoint}/auth/remember-info`)
+      .set('Authorization', token)
+      .send(data)
+      .end((_err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body.status).to.be.equal('success');
+        done();
+      });
+  });
+});

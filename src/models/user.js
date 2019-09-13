@@ -27,6 +27,11 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       defaultValue: sequelize.fn('NOW')
     },
+    rememberInfo: {
+      allowNull: true,
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
     phoneNumber: {
       allowNull: true,
       type: DataTypes.STRING

@@ -11,7 +11,7 @@ const redirect = process.env.LINKENDIN_REDIRECT_URL;
 const Linkedin = Linkedn(clientId, clientSecret, redirect);
 
 
-const { resSuccess, resError } = ResponseMsg;
+const { resSuccess, resSuccessShort, resError } = ResponseMsg;
 /**
  * User controller Class
  */
@@ -162,5 +162,23 @@ export default class UserController {
       });
       profileRequest.end();
     });
+  }
+
+  /**
+   * @name rememberInfo
+   * @param {*} req Request object
+   * @param {*} res Response object
+   * @return {json} Returns json object
+   * @memberof User
+   */
+  static async rememberInfo(req, res) {
+    const { id } = req.user;
+    const { rememberInfo } = req.body;
+    try {
+      await UserServices.UpdateRememberInfo(id, rememberInfo);
+      return resSuccessShort(res, 200);
+    } catch (error) {
+      return resError(res, 500, error.message);
+    }
   }
 }

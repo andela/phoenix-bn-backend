@@ -40,6 +40,14 @@ module.exports = {
       type: Sequelize.BOOLEAN,
       defaultValue: false,
     },
+    rememberInfo: {
+      allowNull: true,
+      type: Sequelize.BOOLEAN,
+      defaultValue: false,
+      validate: {
+        notNull: true,
+      },
+    },
     createdAt: {
       allowNull: false,
       type: Sequelize.DATE,

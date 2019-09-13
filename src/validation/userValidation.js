@@ -34,4 +34,12 @@ const emailValidation = [
   check('email').normalizeEmail(),
 ];
 
-export default { emailValidation, userValidation, userLoginValidation };
+const rememberInfoValidation = [
+  check('rememberInfo').trim().not().isEmpty()
+    .withMessage('rememberInfo field cannot be empty'),
+  check('rememberInfo').isBoolean().withMessage('rememberInfo should be a boolean'),
+];
+
+export default {
+  emailValidation, userValidation, userLoginValidation, rememberInfoValidation
+};
