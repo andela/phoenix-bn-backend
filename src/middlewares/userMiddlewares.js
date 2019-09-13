@@ -1,4 +1,4 @@
-import userServices from '../services/UserServices';
+import userServices from '../services/userServices';
 import ResponseMsg from '../utils/responseMessages';
 import Utils from '../utils';
 
@@ -37,17 +37,17 @@ export default class UserMiddlewares {
  */
   static async checkUserIsSuperAdmin(req, res, next) {
     try {
-      const sentToken = req.get('Authorization');
+      const sentToken = req.get('Authentication');
       let token = '';
       if (!sentToken) {
         return resError(res, 401, 'No authorization token was sent');
       }
       token = sentToken.slice(7, sentToken.length);
       const jwt = Utils.verifyToken(token);
-      if (jwt.userRoles.include('super administrator')) {
+      if (jwt.roles.includes('Super Administrator')) {
         return next();
       }
-      return resError(res, 403, 'You are allowed to perform this operation');
+      return resError(res, 403, 'You are not allowed to perform this operation');
     } catch (error) {
       resError(res, 401, 'Session has expired. Sign in.');
     }
@@ -70,6 +70,28 @@ export default class UserMiddlewares {
         return next();
       }
       return resError(res, 404, 'User does not exist.');
+    } catch (error) {
+      return resError(res, 500, error.message);
+    }
+  }
+
+  /**
+ * @name checkUserExistBeforeAddRole
+ * @description Checks if a user exists in the database
+ * @param {object} req The request object
+ * @param {object} res The response object
+ * @param {object} next The response object
+ * @returns {object} The API response or next()
+ */
+  static async checkUserExistBeforeAddRole(req, res, next) {
+    try {
+      const { email } = req.body;
+      const data = await userServices.getUserByEmail(email);
+      if (data) {
+        req.user = data.dataValues;
+        return next();
+      }
+      return resError(res, 404, 'User with this email does not exist.');
     } catch (error) {
       return resError(res, 500, error.message);
     }

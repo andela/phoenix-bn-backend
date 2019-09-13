@@ -1,8 +1,11 @@
 import https from 'https';
 import Linkedn from 'node-linkedin';
+import dotenv from 'dotenv';
 import Utils from '../utils';
-import UserServices from '../services/UserServices';
+import UserServices from '../services/userServices';
 import ResponseMsg from '../utils/responseMessages';
+
+dotenv.config();
 
 const scope = ['r_liteprofile', 'w_member_social', 'r_emailaddress'];
 const clientId = process.env.LINKENDIN_CLIENT_ID;
@@ -25,13 +28,10 @@ export default class UserController {
    */
   static async createUser(req, res) {
     try {
-      const { email } = req.body;
-      const randomPassword = 'password'; // Utils.randomPassword();
+      const { email, role } = req.body;
+      const randomPassword = process.env.SECRET; // Utils.randomPassword();
       const password = Utils.hashPassword(randomPassword);
-      const data = await UserServices.createUser({ email, password });
-      const { id } = data;
-      const token = Utils.generateToken({ id, email });
-      res.set('Authorization', `Bearer ${token}`);
+      const data = await UserServices.createUser({ email, password, role });
       return resSuccess(res, 201, data);
     } catch (error) {
       return resError(res, 500, error.message);
@@ -53,8 +53,9 @@ export default class UserController {
 
       if (isCorrectPassword) {
         delete user.password;
-        const { id, isAdmin, email } = user;
-        const token = Utils.generateToken({ id, isAdmin, email });
+        const { id, email, Roles } = user;
+        const roles = Utils.extractRoles(Roles);
+        const token = Utils.generateToken({ id, roles, email });
         res.set('Authorization', `Bearer ${token}`);
         return resSuccess(res, 200, user);
       }

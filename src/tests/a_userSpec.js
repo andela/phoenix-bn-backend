@@ -1,19 +1,64 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
+import dotenv from 'dotenv';
 import app from '..';
+
+dotenv.config();
 
 chai.use(chaiHttp);
 const { expect } = chai;
 const endPoint = '/api/v1';
 
+
+describe('POST /api/v1/auth/signin', () => {
+  const admin = {
+    email: 'abel@gmail.com',
+    password: process.env.SECRET
+  };
+  const user = {
+    email: 'igbokwe@gmail.com',
+    password: process.env.SECRET
+  };
+  it('sign in a super admin', (done) => {
+    chai.request(app)
+      .post(`${endPoint}/auth/signin`)
+      .send(admin)
+      .end((_err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body).to.have.property('data');
+        expect(res.body.data).to.be.a('object');
+        expect(res.body.data).to.have.property('id');
+        expect(res.body.data.id).to.be.a('number');
+        expect(res.body.data.id % 1).to.be.equal(0);
+        process.env.testTokenAdmin = res.get('Authorization');
+        done();
+      });
+  });
+  it('sign in a normal user', (done) => {
+    chai.request(app)
+      .post(`${endPoint}/auth/signin`)
+      .send(user)
+      .end((_err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body).to.have.property('data');
+        expect(res.body.data).to.be.a('object');
+        expect(res.body.data).to.have.property('id');
+        expect(res.body.data.id).to.be.a('number');
+        expect(res.body.data.id % 1).to.be.equal(0);
+        process.env.testTokenUser = res.get('Authorization');
+        done();
+      });
+  });
+});
+
 describe('POST /api/v1/auth/signup', () => {
   it('should create a new user and return 201', (done) => {
     const user = {
-      email: 'myemail@gmail.com',
+      email: 'example@gmail.com',
     };
-    chai
-      .request(app)
+    chai.request(app)
       .post(`${endPoint}/auth/signup`)
+      .set({ Authentication: `${process.env.testTokenAdmin}` })
       .send(user)
       .end((_err, res) => {
         expect(res).to.have.status(201);
@@ -26,13 +71,49 @@ describe('POST /api/v1/auth/signup', () => {
         done();
       });
   });
+  it('should create a new user and return 201', (done) => {
+    const user = {
+      email: 'example2@gmail.com',
+      role: 'Requester'
+    };
+    chai.request(app)
+      .post(`${endPoint}/auth/signup`)
+      .set({ Authentication: `${process.env.testTokenAdmin}` })
+      .send(user)
+      .end((_err, res) => {
+        expect(res).to.have.status(201);
+        expect(res.body.status).to.be.equal('success');
+        expect(res.body).to.have.property('data');
+        expect(res.body.data).to.be.a('object');
+        expect(res.body.data).to.have.property('id');
+        expect(res.body.data.id).to.be.a('number');
+        expect(res.body.data.id % 1).to.be.equal(0);
+        done();
+      });
+  });
+  it('should not create a new user and return 400', (done) => {
+    const user = {
+      email: 'example@gmail.com',
+      role: 'Requestersss'
+    };
+    chai.request(app)
+      .post(`${endPoint}/auth/signup`)
+      .set({ Authentication: `${process.env.testTokenAdmin}` })
+      .send(user)
+      .end((_err, res) => {
+        expect(res).to.have.status(400);
+        expect(res.body).to.have.property('error');
+        done();
+      });
+  });
   it('should return 409 if user already exists', (done) => {
     const user = {
-      email: 'myemail@gmail.com',
+      email: 'example@gmail.com',
     };
     chai
       .request(app)
       .post(`${endPoint}/auth/signup`)
+      .set({ authentication: `${process.env.testTokenAdmin}` })
       .send(user)
       .end((_err, res) => {
         expect(res).to.have.status(409);
@@ -49,6 +130,7 @@ describe('POST /api/v1/auth/signup', () => {
     };
     chai.request(app)
       .post('/api/v1/auth/signup')
+      .set({ authentication: `${process.env.testTokenAdmin}` })
       .send(user)
       .end((err, res) => {
         expect(res).to.have.status(422);
@@ -63,8 +145,8 @@ describe('POST /api/v1/auth/signup', () => {
 describe('POST /api/v1/auth/signin', () => {
   it('should signin user and return 200', (done) => {
     const user = {
-      email: 'myemail@gmail.com',
-      password: 'password'
+      email: 'example@gmail.com',
+      password: process.env.SECRET
     };
     chai.request(app)
       .post(`${endPoint}/auth/signin`)
@@ -77,7 +159,7 @@ describe('POST /api/v1/auth/signin', () => {
   });
   it('should not signin user and return 401', (done) => {
     const invalidUser = {
-      email: 'myemail@gmail.com',
+      email: 'example@gmail.com',
       password: 'passwordno'
     };
     chai.request(app)
@@ -92,7 +174,7 @@ describe('POST /api/v1/auth/signin', () => {
   });
   it('should not signin user and return 404', (done) => {
     const invalidUser2 = {
-      email: 'myemail@gmail.commm',
+      email: 'example@gmail.commm',
       password: 'passwordno'
     };
     chai.request(app)

@@ -11,13 +11,22 @@ export default class UserServices {
    * @returns {object} return the updated field
    */
   static async createUser(userData) {
-    const dataValues = await models.Sequelize.Transaction(async (t) => {
-      const m = await models.User.create(userData, { transaction: t });
+    const user = await models.sequelize.transaction(async (t) => {
+      const m = await models.Users.create(userData, { transaction: t });
       return m;
+    }).then(async (result) => {
+      const { dataValues } = result;
+      const roleData = {
+        userId: dataValues.id,
+        userEmail: dataValues.email,
+        roleName: userData.role
+      };
+      const role = await models.Roles.create(roleData);
+      delete dataValues.password;
+      dataValues.Roles = role.dataValues;
+      return dataValues;
     });
-    // const { dataValues } = await models.User.create(userData);
-    // delete dataValues.password; // remove sensitive data from returned object
-    return dataValues;
+    return user;
   }
 
   /**
@@ -27,7 +36,12 @@ export default class UserServices {
    * @returns {object} return the user's data
    */
   static async getUserByEmail(email) {
-    const data = await models.User.findOne({ where: { email } });
+    const data = await models.Users.findOne({
+      where: { email },
+      include: [
+        { model: models.Roles, where: { userEmail: email } }
+      ]
+    });
     return data;
   }
 }
