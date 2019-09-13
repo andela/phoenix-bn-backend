@@ -5,10 +5,6 @@ const userProfileValidation = [
     .withMessage('First name field cannot be empty.'),
   check('lastName').trim().not().isEmpty()
     .withMessage('last name field cannot be empty.'),
-  check('password').trim().not().isEmpty()
-    .withMessage('Please password is required'),
-  check('password').isLength({ min: 8 }).withMessage('Password should be atleast 8 characters'),
-  check('password').isAlphanumeric().withMessage('Password should contain only letters and numbers'),
   check('department').trim().not().isEmpty()
     .withMessage('department field cannot be empty'),
   check('gender').trim().not().isEmpty()
@@ -41,4 +37,12 @@ const emailValidation = [
   check('email').normalizeEmail(),
 ];
 
-export default { emailValidation, userProfileValidation, userLoginValidation };
+const rememberInfoValidation = [
+  check('rememberInfo').trim().not().isEmpty()
+    .withMessage('rememberInfo field cannot be empty'),
+  check('rememberInfo').isBoolean().withMessage('rememberInfo should be a boolean'),
+];
+
+export default {
+  emailValidation, userProfileValidation, userLoginValidation, rememberInfoValidation,
+};

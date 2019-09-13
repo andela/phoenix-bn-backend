@@ -56,6 +56,11 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       defaultValue: false
     },
+    rememberInfo: {
+      allowNull: true,
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
     phoneNumber: {
       allowNull: true,
       type: DataTypes.STRING

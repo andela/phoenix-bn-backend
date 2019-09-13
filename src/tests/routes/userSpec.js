@@ -167,7 +167,7 @@ describe('GET /api/v1/user/linkedin/signin', () => {
       });
   });
 });
-describe('/POST api/v1/user/update-profile', () => {
+describe('/PATCH api/v1/user/update-profile', () => {
   const userDetails = {
     firstName: 'john',
     lastName: 'doe',
@@ -215,6 +215,83 @@ describe('/POST api/v1/user/update-profile', () => {
         expect(res.body).to.have.property('error');
         expect(res.body.error).to.be.a('string');
         expect(res.body.error).to.include('No Authentication token');
+        done();
+      });
+  });
+  it('it should return error for an invalid token', (done) => {
+    const invalidToken = 'Bearer eyJhbGciOib20iLCJpYXQiOjE1NjgzOTA3gJ8KbmH4eJwNQiAHdYH-wlyU';
+    chai.request(app)
+      .patch(`${endPoint}/auth/user/update-profile`)
+      .set('Authorization', invalidToken)
+      .send(userDetails)
+      .end((err, res) => {
+        expect(res).to.have.status(401);
+        expect(res.body).be.an('object');
+        expect(res.body.status).be.a('string');
+        expect(res.body.status).to.be.equal('error');
+        done();
+      });
+  });
+});
+describe('/GET api/v1/user/get-profile', () => {
+  it('it should return a 201 response upon authorization', (done) => {
+    chai
+      .request(app)
+      .get(`${endPoint}/auth/user/get-profile`)
+      .set('Authorization', token)
+      .end((_err, res) => {
+        expect(res.body.status).to.be.equal('success');
+        expect(res.body).to.have.property('data');
+        expect(res.body).to.be.a('object');
+        expect(res.body.data).to.be.a('object');
+        expect(res.body.data).to.have.property('firstName');
+        expect(res.body.data).to.have.property('lastName');
+        expect(res.body.data).to.have.property('gender');
+        expect(res.body.data).to.have.property('department');
+        expect(res.body.data).to.have.property('phoneNumber');
+        done();
+      });
+  });
+  it('it should return a 401 response without authorization', (done) => {
+    chai
+      .request(app)
+      .get(`${endPoint}/auth/user/get-profile`)
+      .end((_err, res) => {
+        expect(res).to.have.status(401);
+        expect(res.body.status).to.be.equal('error');
+        expect(res.body).to.have.property('error');
+        expect(res.body.error).to.be.a('string');
+        expect(res.body.error).to.include('No Authentication token');
+        done();
+      });
+  });
+  it('it should return error for an invalid token', (done) => {
+    const invalidToken = 'Bearer eyJhbGciOib20iLCJpYXQiOjE1NjgzOTA3gJ8KbmH4eJwNQiAHdYH-wlyU';
+    chai.request(app)
+      .get(`${endPoint}/auth/user/get-profile`)
+      .set('Authorization', invalidToken)
+      .end((err, res) => {
+        expect(res).to.have.status(401);
+        expect(res.body).be.an('object');
+        expect(res.body.status).be.a('string');
+        expect(res.body.status).to.be.equal('error');
+        done();
+      });
+  });
+});
+describe('PATCH /api/v1/auth/remember-info', () => {
+  it('should allow a user opt for saving profile information for future requests', (done) => {
+    const data = {
+      rememberInfo: false,
+    };
+    chai
+      .request(app)
+      .patch(`${endPoint}/auth/remember-info`)
+      .set('Authorization', token)
+      .send(data)
+      .end((_err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body.status).to.be.equal('success');
         done();
       });
   });

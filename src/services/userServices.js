@@ -56,4 +56,16 @@ export default class UserServices {
     delete result.password;
     return result;
   }
+
+  /**
+   * @name UpdateRememberInfo
+   * @description Updates the remember info column in the user's table
+   * @param { string } id the user's id
+   * @param { object } rememberInfo the field to be updated with the value
+   * @returns {object} return the user's data
+   */
+  static async UpdateRememberInfo(id, rememberInfo) {
+    const data = await models.User.update({ rememberInfo }, { where: { id } });
+    if (data[0] === 0) throw new Error('could not update user field');
+  }
 }

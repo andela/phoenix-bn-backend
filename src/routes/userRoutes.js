@@ -14,22 +14,28 @@ const {
   getGoogleAccountFromCode,
   getLinkedinUrl,
   getLinkedinAccountFromCode,
-  updateUserInfo
+  updateUserInfo,
+  rememberInfo,
+  getUserProfile,
 } = UserController;
 
 
 const { checkUserExists, checkUserExistBeforeLogin, confirmUserExists } = UserMiddlewares;
-const { emailValidation, userProfileValidation, userLoginValidation } = userValidations;
+const {
+  emailValidation, userProfileValidation, userLoginValidation, rememberInfoValidation,
+} = userValidations;
 const { verifyToken } = Auth;
 
 userRoutes.post('/signup', verifyToken, emailValidation, validationHandler, checkUserExists, createUser);
 userRoutes.post('/signin', userLoginValidation, validationHandler, checkUserExistBeforeLogin, login);
+userRoutes.patch('/remember-info', verifyToken, rememberInfoValidation, validationHandler, rememberInfo);
 
 userRoutes.get('/user/google/signin', getGoogleUrl);
 userRoutes.get('/google/callback', getGoogleAccountFromCode);
 userRoutes.get('/user/linkedin/signin', getLinkedinUrl);
 userRoutes.get('/linkedin/callback', getLinkedinAccountFromCode);
 userRoutes.patch('/user/update-profile', verifyToken, userProfileValidation, validationHandler, confirmUserExists, updateUserInfo);
+userRoutes.get('/user/get-profile', verifyToken, getUserProfile);
 
 
 export default userRoutes;
