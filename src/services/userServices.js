@@ -52,6 +52,8 @@ export default class UserServices {
       phoneNumber,
     },
     { where: { email }, returning: true, plain: true });
-    return userDetails;
+    const result = userDetails[1].dataValues;
+    delete result.password;
+    return result;
   }
 }

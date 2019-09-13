@@ -211,10 +211,10 @@ describe('/POST api/v1/user/update-profile', () => {
       .send(userDetails)
       .end((_err, res) => {
         expect(res).to.have.status(401);
-        expect(res.body.status).to.be.equal(401);
+        expect(res.body.status).to.be.equal('error');
         expect(res.body).to.have.property('error');
         expect(res.body.error).to.be.a('string');
-        expect(res.body.error).to.include('invalid request, token missing.');
+        expect(res.body.error).to.include('No Authentication token');
         done();
       });
   });

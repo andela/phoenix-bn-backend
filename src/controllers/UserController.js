@@ -176,12 +176,7 @@ export default class UserController {
       const { user } = req;
       userData.password = Utils.hashPassword(userData.password);
       const data = await UserServices.updateUserInfoById({ ...userData }, user.email);
-      const userInfo = data[1].dataValues;
-      if (userInfo) {
-        delete userInfo.password;
-        return resSuccess(res, 201, userInfo);
-      }
-      return resError(res, 404, 'User does not exist');
+      return resSuccess(res, 201, data);
     } catch (error) {
       return resError(res, 500, error.message);
     }
