@@ -11,7 +11,7 @@ const userValidation = [
   check('email').normalizeEmail(),
   check('password').trim().not().isEmpty()
     .withMessage('Please password is required'),
-  check('password').isLength({ min: 8 }).withMessage('Password should be atleast 8 characters'),
+  check('password').isLength({ min: 8 }).withMessage('Password should be at least 8 characters'),
   check('password').isAlphanumeric().withMessage('Password should contain only letters and numbers'),
   check('phoneNumber').isNumeric().withMessage('It has to be a valid phone number'),
 ];
@@ -23,7 +23,7 @@ const userLoginValidation = [
   check('email').normalizeEmail(),
   check('password').trim().not().isEmpty()
     .withMessage('Please password is required'),
-  check('password').isLength({ min: 8 }).withMessage('Password should be atleast 8 characters'),
+  check('password').isLength({ min: 8 }).withMessage('Password should be at least 8 characters'),
   check('password').isAlphanumeric().withMessage('Password should contain only letters and numbers'),
 ];
 
@@ -40,6 +40,17 @@ const rememberInfoValidation = [
   check('rememberInfo').isBoolean().withMessage('rememberInfo should be a boolean'),
 ];
 
+const checkPassword = [
+  check('password').trim().not().isEmpty()
+    .withMessage('Please password is required'),
+  check('password').isLength({ min: 8 }).withMessage('Password should be at least 8 characters'),
+  check('password').isAlphanumeric().withMessage('Password should contain only letters and numbers'),
+];
+
 export default {
-  emailValidation, userValidation, userLoginValidation, rememberInfoValidation
+  emailValidation,
+  userValidation,
+  userLoginValidation,
+  checkPassword,
+  rememberInfoValidation
 };

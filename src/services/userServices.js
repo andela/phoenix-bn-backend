@@ -1,4 +1,4 @@
-import models from '../models';
+import { User } from '../models';
 
 /**
  * User service Class
@@ -11,7 +11,7 @@ export default class UserServices {
    * @returns {object} return the updated field
    */
   static async createUser(userData) {
-    const { dataValues } = await models.User.create(userData);
+    const { dataValues } = await User.create(userData);
     delete dataValues.password; // remove sensitive data from returned object
     return dataValues;
   }
@@ -23,8 +23,19 @@ export default class UserServices {
    * @returns {object} return the user's data
    */
   static async getUserByEmail(email) {
-    const data = await models.User.findOne({ where: { email } });
+    const data = await User.findOne({ where: { email } });
     return data;
+  }
+
+  /**
+   * @name GetUserById
+   * @description Interacts with model to find a single user
+   * @param { string } id the user's id
+   * @returns {object} return the user's data
+   */
+  static async getUserById(id) {
+    const userDetails = await User.findOne({ where: { id, } });
+    return userDetails;
   }
 
   /**
@@ -35,7 +46,21 @@ export default class UserServices {
    * @returns {object} return the user's data
    */
   static async UpdateRememberInfo(id, rememberInfo) {
-    const data = await models.User.update({ rememberInfo }, { where: { id } });
+    const data = await User.update({ rememberInfo }, { where: { id } });
     if (data[0] === 0) throw new Error('could not update user field');
+  }
+
+  /**
+   * @name updateUserById
+   * @description Interacts with model to find a single user
+   * @param { object } attribute the user attribute to update
+   * @param { string } id the user's id
+   * @returns {object} return the user's data
+   */
+  static async updateUserById(attribute, id) {
+    const { name, value } = attribute;
+    const userDetails = await User.update({ [name]: value },
+      { where: { id, } }, { returning: true });
+    return userDetails;
   }
 }

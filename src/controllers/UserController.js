@@ -3,6 +3,7 @@ import Linkedn from 'node-linkedin';
 import Utils from '../utils';
 import UserServices from '../services/userServices';
 import ResponseMsg from '../utils/responseMessages';
+import NotifyUser from '../utils/notification';
 
 const scope = ['r_liteprofile', 'w_member_social', 'r_emailaddress'];
 const clientId = process.env.LINKENDIN_CLIENT_ID;
@@ -17,12 +18,12 @@ const { resSuccess, resSuccessShort, resError } = ResponseMsg;
  */
 export default class UserController {
   /**
-   * @name CreateUser
-   * @description Allows an admin add a new user
-   * @param {object} req The request object
-   * @param {object} res The response object
-   * @returns {object} The API response
-   */
+ * @name CreateUser
+ * @description Allows an admin add a new user and sends email verification to user
+ * @param {object} req The request object
+ * @param {object} res The response object
+ * @returns {object} The API response
+ */
   static async createUser(req, res) {
     try {
       const { email } = req.body;
@@ -177,6 +178,57 @@ export default class UserController {
     try {
       await UserServices.UpdateRememberInfo(id, rememberInfo);
       return resSuccessShort(res, 200);
+    } catch (error) {
+      return resError(res, 500, error.message);
+    }
+  }
+
+  /**
+ * @name forgetPassword
+ * @description User enters email address to receive a resetpassword link
+ * @param {object} req The request object
+ * @param {object} res The response object
+ * @returns {object} The API response
+ */
+  static async forgetPassword(req, res) {
+    try {
+      const { email } = req.body;
+      const { baseUrl } = req;
+      const { host } = req.headers;
+      const uri = host + baseUrl;
+      const { id } = await UserServices.getUserByEmail(email);
+      const token = Utils.generateToken({ email, id }, '20m');
+
+      const link = `http://${uri}/resetpassword/${token}`;
+      NotifyUser.resetPassword(email, link);
+      return resSuccess(res, 200, {
+        message: 'Your password reset link has been sent'
+      });
+    } catch (error) {
+      return resError(res, 500, error.message);
+    }
+  }
+
+  /**
+ * @name forgetPassword
+ * @description User updates their password
+ * @param {object} req The request object
+ * @param {object} res The response object
+ * @returns {object} The API response
+ */
+  static async resetPassword(req, res) {
+    try {
+      const { token } = req.params;
+      const { password } = req.body;
+      const { id } = Utils.decodeToken(token);
+      const newPassword = Utils.hashPassword(password);
+      await UserServices.updateUserById({
+        name: 'password',
+        value: newPassword
+      }, id);
+      return resSuccess(res, 200, {
+        message: 'Password Successfully Changed'
+      });
     } catch (error) {
       return resError(res, 500, error.message);
     }
