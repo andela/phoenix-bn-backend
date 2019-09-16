@@ -31,6 +31,34 @@ module.exports = {
         isEmail: true,
       },
     },
+    birthDate: {
+      allowNull: true,
+      type: Sequelize.STRING,
+    },
+    residenceAddress: {
+      allowNull: true,
+      type: Sequelize.STRING,
+    },
+    lineManager: {
+      allowNull: true,
+      type: Sequelize.STRING,
+    },
+    preferredLanguage: {
+      allowNull: true,
+      type: Sequelize.STRING,
+    },
+    preferredCurrency: {
+      allowNull: true,
+      type: Sequelize.STRING,
+    },
+    department: {
+      allowNull: true,
+      type: Sequelize.STRING,
+    },
+    gender: {
+      allowNull: true,
+      type: Sequelize.STRING,
+    },
     phoneNumber: {
       allowNull: true,
       type: Sequelize.STRING,

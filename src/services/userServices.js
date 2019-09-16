@@ -28,6 +28,36 @@ export default class UserServices {
   }
 
   /**
+  * @name updateUserInfoById
+  * @description Interacts with model to find a single user
+  * @param { object } attribute the user attribute to update
+  * @param { string } email the user's email
+  * @returns {object} return the user's data
+  */
+  static async updateUserInfoById(attribute, email) {
+    const {
+      firstName, lastName, birthDate, preferredLanguage, preferredCurrency, residenceAddress,
+      gender, department, lineManager, phoneNumber
+    } = attribute;
+    const userDetails = await models.User.update({
+      firstName,
+      lastName,
+      birthDate,
+      preferredLanguage,
+      preferredCurrency,
+      gender,
+      residenceAddress,
+      lineManager,
+      department,
+      phoneNumber,
+    },
+    { where: { email }, returning: true, plain: true });
+    const result = userDetails[1].dataValues;
+    delete result.password;
+    return result;
+  }
+
+  /**
    * @name UpdateRememberInfo
    * @description Updates the remember info column in the user's table
    * @param { string } id the user's id

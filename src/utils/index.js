@@ -89,9 +89,9 @@ class Utils {
   static getGooglePlusApi(auth) {
     return google.plus({ version: 'v1', auth });
   }
-
+  
   /**
-  * RandomPassword
+  * @RandomPassword
   * @description generates a random password
   * @returns { String } random password
   */

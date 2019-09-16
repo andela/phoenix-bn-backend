@@ -50,7 +50,6 @@ export default class UserController {
       const { user } = req;
       const { password } = req.body;
       const isCorrectPassword = Utils.comparePassword(password, user.password);
-
       if (isCorrectPassword) {
         delete user.password;
         const { id, email } = user;
@@ -59,7 +58,7 @@ export default class UserController {
         return resSuccess(res, 200, user);
       }
       if (!isCorrectPassword) {
-        return resError(res, 401, 'Inavalid email/password.');
+        return resError(res, 401, 'Invalid email/password.');
       }
     } catch (error) {
       return resError(res, 500, error.message);
@@ -162,6 +161,43 @@ export default class UserController {
       });
       profileRequest.end();
     });
+  }
+
+  /**
+ * @name updateUserInfo
+ * @description Updates user profile to complete registration
+ * @param {object} req The request object
+ * @param {object} res The response object
+ * @returns {object} The API response
+ */
+  static async updateUserInfo(req, res) {
+    try {
+      const userData = { ...req.body };
+      const { user } = req;
+      userData.password = Utils.hashPassword(userData.password);
+      const data = await UserServices.updateUserInfoById({ ...userData }, user.email);
+      return resSuccess(res, 201, data);
+    } catch (error) {
+      return resError(res, 500, error.message);
+    }
+  }
+
+  /**
+* @name getUserProfile
+* @description gets user profile to complete registration
+* @param {object} req The request object
+* @param {object} res The response object
+* @returns {object} The API response
+*/
+  static async getUserProfile(req, res) {
+    try {
+      const { user } = req;
+      const { dataValues } = await UserServices.getUserByEmail(user.email);
+      delete dataValues.password;
+      return resSuccess(res, 201, dataValues);
+    } catch (error) {
+      return resError(res, 500, error.message);
+    }
   }
 
   /**
