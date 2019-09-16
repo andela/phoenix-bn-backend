@@ -28,8 +28,6 @@ export default class UserServices {
   }
 
   /**
-<<<<<<< HEAD
-=======
    * @name GetUserById
    * @description Interacts with model to find a single user
    * @param { string } id the user's id
@@ -41,7 +39,6 @@ export default class UserServices {
   }
 
   /**
->>>>>>> feat(user) - user reset password
    * @name UpdateRememberInfo
    * @description Updates the remember info column in the user's table
    * @param { string } id the user's id
