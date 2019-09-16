@@ -552,7 +552,7 @@
                 "password": {
                     "type": "string"
                 },
-                "residencAddress": {
+                "residenceAddress": {
                     "type": "string",
                     "description": "residence address of the user"
                 },
