@@ -167,6 +167,42 @@ export default class UserController {
   }
 
   /**
+ * @name updateUserInfo
+ * @description Updates user profile to complete registration
+ * @param {object} req The request object
+ * @param {object} res The response object
+ * @returns {object} The API response
+ */
+  static async updateUserInfo(req, res) {
+    try {
+      const userData = { ...req.body };
+      const { user } = req;
+      const data = await UserServices.updateUserInfoById({ ...userData }, user.email);
+      return resSuccess(res, 201, data);
+    } catch (error) {
+      return resError(res, 500, error.message);
+    }
+  }
+
+  /**
+* @name getUserProfile
+* @description gets user profile to complete registration
+* @param {object} req The request object
+* @param {object} res The response object
+* @returns {object} The API response
+*/
+  static async getUserProfile(req, res) {
+    try {
+      const { user } = req;
+      const { dataValues } = await UserServices.getUserByEmail(user.email);
+      delete dataValues.password;
+      return resSuccess(res, 201, dataValues);
+    } catch (error) {
+      return resError(res, 500, error.message);
+    }
+  }
+
+  /**
    * @name rememberInfo
    * @param {*} req Request object
    * @param {*} res Response object

@@ -29,7 +29,36 @@ module.exports = {
       unique: { args: true, msg: 'This email is already registered. Login.' },
       validate: {
         isEmail: true,
+        notNull: true
       },
+    },
+    birthDate: {
+      allowNull: true,
+      type: Sequelize.STRING,
+    },
+    gender: {
+      allowNull: true,
+      type: Sequelize.STRING,
+    },
+    residenceAddress: {
+      allowNull: true,
+      type: Sequelize.STRING,
+    },
+    lineManager: {
+      allowNull: true,
+      type: Sequelize.STRING,
+    },
+    preferredLanguage: {
+      allowNull: true,
+      type: Sequelize.STRING,
+    },
+    preferredCurrency: {
+      allowNull: true,
+      type: Sequelize.STRING,
+    },
+    department: {
+      allowNull: true,
+      type: Sequelize.STRING,
     },
     phoneNumber: {
       allowNull: true,
@@ -41,55 +70,6 @@ module.exports = {
       defaultValue: false,
       validate: {
         notNull: true,
-      },
-    },
-    gender: {
-      allowNull: true,
-      type: Sequelize.STRING,
-      validate: {
-        notNull: false,
-      },
-    },
-    birthdate: {
-      allowNull: true,
-      type: Sequelize.DATEONLY,
-      validate: {
-        notNull: false,
-      },
-    },
-    preferredLanguage: {
-      allowNull: true,
-      type: Sequelize.STRING,
-      validate: {
-        notNull: false,
-      },
-    },
-    preferredCurrency: {
-      allowNull: true,
-      type: Sequelize.STRING,
-      validate: {
-        notNull: false,
-      },
-    },
-    address: {
-      allowNull: true,
-      type: Sequelize.STRING,
-      validate: {
-        notNull: false,
-      },
-    },
-    department: {
-      allowNull: true,
-      type: Sequelize.STRING,
-      validate: {
-        notNull: false,
-      },
-    },
-    lineManager: {
-      allowNull: true,
-      type: Sequelize.INTEGER,
-      validate: {
-        notNull: false,
       },
     },
     createdAt: {

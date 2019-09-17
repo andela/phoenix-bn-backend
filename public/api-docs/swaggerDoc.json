@@ -188,6 +188,115 @@
                 }
             }
         },
+        "/api/v1/auth/user/update-profile": {
+            "patch": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Users profile settings",
+                "description": "User gets a user profile upon successful registration to wetravel and is able to update/edit",
+                "operationId": "CreateUserProfile",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "user",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "firstName": {
+                                    "type": "string",
+                                    "example": "john"
+                                },
+                                "lastName": {
+                                    "type": "string",
+                                    "example": "doe"
+                                },
+                                "password": {
+                                    "type": "string",
+                                    "example": "password"
+                                },
+                                "gender": {
+                                    "type": "string",
+                                    "example": "male"
+                                },
+                                "lineManager": {
+                                    "type": "string",
+                                    "example": "Williams Doe"
+                                },
+                                "preferredCurrency": {
+                                    "type": "string",
+                                    "example": "$"
+                                },
+                                "preferredLanguage": {
+                                    "type": "string",
+                                    "example": "English"
+                                },
+                                "department": {
+                                    "type": "string",
+                                    "example": "IT"
+                                },
+                                "birthDate": {
+                                    "type": "string",
+                                    "example": "14/10/1990"
+                                },
+                                "residenceAddress": {
+                                    "type": "string",
+                                    "example": "14, Jeremiah Ugwu, Lekki, Lagos"
+                                },
+                                "phoneNumber": {
+                                    "type": "integer",
+                                    "example": "08012345678"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "404": {
+                        "description": "Unsuccessfu, User not found"
+                    },
+                    "500": {
+                        "description": "Internal Server error"
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/user/get-profile": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Users profile settings",
+                "description": "WeTravel User is able to access their wetravel profile",
+                "operationId": "GetUserProfile",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "201": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "404": {
+                        "description": "Unsuccessfu, User not found"
+                    },
+                    "500": {
+                        "description": "Internal Server error"
+                    }
+                }
+            }
+        },
         "/api/v1/auth/user/google/signin": {
             "get": {
                 "tags": [
@@ -530,15 +639,11 @@
                     "type": "integer",
                     "format": "int64"
                 },
-                "token": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "first_name": {
+                "firstName": {
                     "type": "string",
                     "example": "John"
                 },
-                "last_name": {
+                "lastName": {
                     "type": "string",
                     "example": "Doe"
                 },
@@ -549,9 +654,37 @@
                 "password": {
                     "type": "string"
                 },
-                "address": {
+                "residenceAddress": {
                     "type": "string",
-                    "description": "Address of WeTravel User"
+                    "description": "residence address of the user"
+                },
+                "department": {
+                    "type": "string",
+                    "description": "User department"
+                },
+                "lineManager": {
+                    "type": "string",
+                    "description": "line manager to the user"
+                },
+                "gender": {
+                    "type": "string",
+                    "description": "User gender"
+                },
+                "phoneNumber": {
+                    "type": "integer",
+                    "description": "Phone number of user"
+                },
+                "role": {
+                    "type": "integer",
+                    "description": "User role"
+                },
+                "preferredLanguage": {
+                    "type": "string",
+                    "description": "User preferred language"
+                },
+                "preferredCurrency": {
+                    "type": "string",
+                    "description": "User preferred currency"
                 }
             },
             "xml": {

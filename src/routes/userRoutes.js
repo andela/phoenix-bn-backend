@@ -15,16 +15,22 @@ const {
   getGoogleAccountFromCode,
   getLinkedinUrl,
   getLinkedinAccountFromCode,
+  updateUserInfo,
   rememberInfo,
+  getUserProfile,
 } = UserController;
 
-const { checkUserExists, checkUserExistBeforeLogin, checkUserIsSuperAdmin } = UserMiddlewares;
+const {
+  checkUserExists,
+  checkUserExistBeforeLogin, checkUserIsSuperAdmin
+} = UserMiddlewares;
 const {
   emailValidation,
-  userLoginValidation, rememberInfoValidation,
+  userProfileValidation,
+  userLoginValidation,
+  rememberInfoValidation,
 } = userValidations;
 const { sentUserRoleValidation } = rolesValidation;
-
 const { verifyToken } = Auth;
 
 userRoutes.post('/signup',
@@ -38,5 +44,9 @@ userRoutes.get('/user/google/signin', getGoogleUrl);
 userRoutes.get('/google/callback', getGoogleAccountFromCode);
 userRoutes.get('/user/linkedin/signin', getLinkedinUrl);
 userRoutes.get('/linkedin/callback', getLinkedinAccountFromCode);
+userRoutes.patch('/user/update-profile', verifyToken,
+  userProfileValidation, validationHandler, updateUserInfo);
+userRoutes.get('/user/get-profile', verifyToken, getUserProfile);
+
 
 export default userRoutes;

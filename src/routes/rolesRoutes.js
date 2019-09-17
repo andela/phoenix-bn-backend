@@ -8,7 +8,7 @@ import rolesController from '../controllers/RolesController';
 
 const roleRoutes = express.Router();
 
-const { checkUserIsSuperAdmin, checkUserExistBeforeAddRole } = UserMiddlewares;
+const { checkUserIsSuperAdmin, confirmUserExists } = UserMiddlewares;
 const { checkRoleExistForUser } = RolesMiddlewares;
 const { emailValidation } = userValidations;
 const { sentUserRoleValidation } = rolesValidation;
@@ -18,6 +18,6 @@ roleRoutes.post('/role',
   checkUserIsSuperAdmin,
   emailValidation,
   validationHandler,
-  checkUserExistBeforeAddRole, sentUserRoleValidation, checkRoleExistForUser, createRole);
+  confirmUserExists, sentUserRoleValidation, checkRoleExistForUser, createRole);
 
 export default roleRoutes;

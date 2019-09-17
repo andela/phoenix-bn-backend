@@ -35,19 +35,19 @@ export default (sequelize, DataTypes) => {
       allowNull: true,
       type: DataTypes.STRING,
     },
-    birthdate: {
+    birthDate: {
       allowNull: true,
-      type: DataTypes.DATEONLY,
+      type: DataTypes.STRING,
+    },
+    residenceAddress: {
+      allowNull: true,
+      type: DataTypes.STRING,
     },
     preferredLanguage: {
       allowNull: true,
       type: DataTypes.STRING,
     },
     preferredCurrency: {
-      allowNull: true,
-      type: DataTypes.STRING,
-    },
-    address: {
       allowNull: true,
       type: DataTypes.STRING,
     },
