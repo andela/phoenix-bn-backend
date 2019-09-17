@@ -1,5 +1,6 @@
 import express from 'express';
 import userRoutes from './userRoutes';
+import rolesRoutes from './rolesRoutes';
 import tripRoutes from './tripRoutes';
 
 const Router = express.Router();
@@ -11,6 +12,7 @@ Router.get('/v1', (req, res) => res.status(200).json({
 
 // Routes
 Router.use('/v1/auth', userRoutes);
+Router.use('/v1', rolesRoutes);
 Router.use('/v1', tripRoutes);
 
 export default Router;

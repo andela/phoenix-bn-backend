@@ -26,12 +26,17 @@ module.exports = {
     email: {
       allowNull: false,
       type: Sequelize.STRING,
-      unique: true,
+      unique: { args: true, msg: 'This email is already registered. Login.' },
       validate: {
         isEmail: true,
+        notNull: true
       },
     },
     birthDate: {
+      allowNull: true,
+      type: Sequelize.STRING,
+    },
+    gender: {
       allowNull: true,
       type: Sequelize.STRING,
     },
@@ -55,18 +60,9 @@ module.exports = {
       allowNull: true,
       type: Sequelize.STRING,
     },
-    gender: {
-      allowNull: true,
-      type: Sequelize.STRING,
-    },
     phoneNumber: {
       allowNull: true,
       type: Sequelize.STRING,
-    },
-    isAdmin: {
-      allowNull: true,
-      type: Sequelize.BOOLEAN,
-      defaultValue: false,
     },
     rememberInfo: {
       allowNull: true,

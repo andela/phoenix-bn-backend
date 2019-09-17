@@ -20,5 +20,3 @@ if(process.env.NODE_ENV != 'production'){
     "migrations-path": path.resolve("./dist/database/migrations"),
   };
 }
-
-

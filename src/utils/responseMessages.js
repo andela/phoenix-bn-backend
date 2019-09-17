@@ -48,4 +48,5 @@ class ResponseMsg {
     });
   }
 }
+
 export default ResponseMsg;

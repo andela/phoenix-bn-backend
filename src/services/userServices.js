@@ -11,9 +11,20 @@ export default class UserServices {
    * @returns {object} return the updated field
    */
   static async createUser(userData) {
-    const { dataValues } = await models.User.create(userData);
-    delete dataValues.password; // remove sensitive data from returned object
-    return dataValues;
+    const { email, password, role } = userData;
+    const user = await models.sequelize.transaction(async (t) => {
+      const newUser = await models.Users.create({ email, password }, { transaction: t })
+        .then((result) => result.dataValues);
+      const userId = newUser.id;
+      const newRole = await models.Roles.create({ roleName: role }, { transaction: t })
+        .then((result) => result.dataValues);
+      const roleId = newRole.id;
+      await models.UsersRoles.create({ userId, roleId }, { transaction: t })
+        .then((result) => result.dataValues);
+      newUser.roles = newRole.roleName;
+      return newUser;
+    });
+    return user;
   }
 
   /**
@@ -23,7 +34,13 @@ export default class UserServices {
    * @returns {object} return the user's data
    */
   static async getUserByEmail(email) {
-    const data = await models.User.findOne({ where: { email } });
+    const data = await models.Users.findOne({
+      where: { email, },
+      include: [{
+        model: models.Roles,
+        as: 'roles'
+      }]
+    });
     return data;
   }
 
@@ -39,7 +56,7 @@ export default class UserServices {
       firstName, lastName, birthDate, preferredLanguage, preferredCurrency, residenceAddress,
       gender, department, lineManager, phoneNumber
     } = attribute;
-    const userDetails = await models.User.update({
+    const userDetails = await models.Users.update({
       firstName,
       lastName,
       birthDate,
@@ -51,7 +68,7 @@ export default class UserServices {
       department,
       phoneNumber,
     },
-    { where: { email }, returning: true, plain: true });
+    { where: { email, }, returning: true, plain: true });
     const result = userDetails[1].dataValues;
     delete result.password;
     return result;
@@ -65,7 +82,7 @@ export default class UserServices {
    * @returns {object} return the user's data
    */
   static async UpdateRememberInfo(id, rememberInfo) {
-    const data = await models.User.update({ rememberInfo }, { where: { id } });
+    const data = await models.Users.update({ rememberInfo }, { where: { id } });
     if (data[0] === 0) throw new Error('could not update user field');
   }
 }

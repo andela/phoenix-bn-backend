@@ -52,6 +52,21 @@ class Utils {
   }
 
   /**
+   * verifyToken
+   * @description verifies a token and return the payload
+   * @param { String } sentToken
+   * @returns { Object } decoded
+   */
+  static verifyTokenForAdmin(sentToken) {
+    try {
+      const decoded = jwt.verify(sentToken, process.env.SECRET);
+      return decoded;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  /**
    * @name createConnection
    * @return {json} Returns json object
    * @memberof Utils
@@ -98,6 +113,19 @@ class Utils {
   /* static randomPassword() {
    return Math.random().toString(36).slice(3);
  } */
+  /**
+  * @name extractRoles
+  * @description gets all user's role from the Roles array
+  * @param { Array } roles
+  * @returns { Array } all user's roles
+  */
+  static extractRoles(roles) {
+    const myRoles = [];
+    for (let i = 0; i < roles.length; i += 1) {
+      myRoles.push(roles[i].roleName);
+    }
+    return myRoles;
+  }
 
   /**
    * decodeToken

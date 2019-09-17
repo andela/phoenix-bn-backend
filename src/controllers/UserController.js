@@ -1,8 +1,11 @@
 import https from 'https';
 import Linkedn from 'node-linkedin';
+import dotenv from 'dotenv';
 import Utils from '../utils';
 import UserServices from '../services/userServices';
 import ResponseMsg from '../utils/responseMessages';
+
+dotenv.config();
 
 const scope = ['r_liteprofile', 'w_member_social', 'r_emailaddress'];
 const clientId = process.env.LINKENDIN_CLIENT_ID;
@@ -25,12 +28,13 @@ export default class UserController {
    */
   static async createUser(req, res) {
     try {
-      const { email } = req.body;
-      const randomPassword = 'password'; // Utils.randomPassword();
+      const { email, role } = req.body;
+      const randomPassword = process.env.SECRET; // Utils.randomPassword();
       const password = Utils.hashPassword(randomPassword);
-      const data = await UserServices.createUser({ email, password });
+      const data = await UserServices.createUser({ email, password, role });
       const { id } = data;
-      const token = Utils.generateToken({ id, email });
+      delete data.password;
+      const token = Utils.generateToken({ id, email, roles: role });
       res.set('Authorization', `Bearer ${token}`);
       return resSuccess(res, 201, data);
     } catch (error) {
@@ -49,17 +53,16 @@ export default class UserController {
     try {
       const { user } = req;
       const { password } = req.body;
-      const isCorrectPassword = Utils.comparePassword(password, user.password);
-      if (isCorrectPassword) {
+      if (Utils.comparePassword(password, user.password)) {
         delete user.password;
         const { id, email } = user;
-        const token = Utils.generateToken({ id, email });
+        let { roles } = user;
+        roles = Utils.extractRoles(roles);
+        const token = Utils.generateToken({ id, email, roles });
         res.set('Authorization', `Bearer ${token}`);
         return resSuccess(res, 200, user);
       }
-      if (!isCorrectPassword) {
-        return resError(res, 401, 'Invalid email/password.');
-      }
+      return resError(res, 401, 'Inavalid email/password.');
     } catch (error) {
       return resError(res, 500, error.message);
     }
@@ -174,7 +177,6 @@ export default class UserController {
     try {
       const userData = { ...req.body };
       const { user } = req;
-      userData.password = Utils.hashPassword(userData.password);
       const data = await UserServices.updateUserInfoById({ ...userData }, user.email);
       return resSuccess(res, 201, data);
     } catch (error) {
