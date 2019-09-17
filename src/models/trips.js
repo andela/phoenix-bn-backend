@@ -29,7 +29,10 @@ export default (sequelize, DataTypes) => {
         key: 'id'
       },
       allowNull: false
-    },
-  });
+    }
+  }, {});
+  Trip.associate = (models) => {
+    Trip.hasMany(models.Comment, { foreignKey: 'tripId', onDelete: 'CASCADE' });
+  };
   return Trip;
 };

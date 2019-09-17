@@ -65,7 +65,9 @@ export default (sequelize, DataTypes) => {
       allowNull: true,
       type: DataTypes.STRING
     }
-  });
-
+  }, {});
+  User.associate = (models) => {
+    User.hasMany(models.Comment, { foreignKey: 'userId', onDelete: 'CASCADE' });
+  }
   return User;
 };
