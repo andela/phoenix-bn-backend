@@ -530,6 +530,84 @@
             }
         }
     },
+    "/api/v1/auth/verify": {
+        "get": {
+            "tags": [
+                "User"
+            ],
+            "summary": "Verifies a user account",
+            "description": "user should get a response onclick on the verification link",
+            "operationId": "verifyUser",
+            "produces": [
+                "application/json"
+            ],
+            "parameters": [
+                {
+                    "in": "query",
+                    "name": "verifyEmail",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "url": {
+                                "type": "string",
+                                "example": "api/v1/auth/verify?token=${token}"
+                            }
+                        }
+                    }
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "Account verification was successful",
+                    "schema": {
+                        "$ref": "#/definitions/User"
+                    }
+                },
+                "400": {
+                    "description": "Unsuccesful, Your account has been Verified"
+                }
+            }
+        }
+    },
+    "/api/v1/auth/reverify/send": {
+        "get": {
+            "tags": [
+                "User"
+            ],
+            "summary": "Sends reverification link to user",
+            "description": "user should get a response onclick on the reverification link",
+            "operationId": "verifyUser",
+            "produces": [
+                "application/json"
+            ],
+            "parameters": [
+                {
+                    "in": "query",
+                    "name": "resendVerifyEmail",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "url": {
+                                "type": "string",
+                                "example": "api/v1/auth/verify?token=${token}"
+                            }
+                        }
+                    }
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "A new verification link has been sent to your mail",
+                    "schema": {
+                        "$ref": "#/definitions/User"
+                    }
+                },
+                "404": {
+                    "description": "Unsuccesful, user does not exist, kindly check to confirm email is correct."
+                }
+            }
+        }
+    },
     "securityDefinitions": {
         "api_key": {
             "type": "apiKey",

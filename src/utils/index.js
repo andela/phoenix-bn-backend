@@ -44,7 +44,7 @@ class Utils {
   /**
    * generateToken
    * @description generates authentication token
-   * @param { Object } payload - { id, isAdmin }
+   * @param { Object } payload - { id, email }
    * @returns { String } token
    */
   static generateToken(payload) {
@@ -110,5 +110,4 @@ class Utils {
     return jwt.verify(token, process.env.SECRET);
   }
 }
-
 export default Utils;
