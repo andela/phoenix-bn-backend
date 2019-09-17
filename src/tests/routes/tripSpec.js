@@ -59,3 +59,35 @@ describe('POST /api/v1/trip', () => {
       });
   });
 });
+
+describe('POST /api/trip/:id/reject', () => {
+  it('It should reject a trip request', (done) => {
+    chai.request(app)
+      .patch('/api/v1/trip/1/reject')
+      .set('Authorization', token)
+      .end((_err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body).to.have.property('data');
+        expect(res.body.data).to.have.property('userId');
+        expect(res.body.data).to.have.property('status');
+        expect(res.body.data).to.have.property('id');
+        expect(res.body.data.status).to.be.equal('rejected');
+        done();
+      });
+  });
+  it('It should fail if the trip doesn\'t exist', (done) => {
+    chai.request(app)
+      .patch('/api/v1/trip/10/reject')
+      .set('Authorization', token)
+      .end((_err, res) => {
+        expect(res).to.have.status(404);
+        expect(res.body).be.an('object');
+        expect(res.body.status).be.a('string');
+        expect(res.body.status).to.be.equal('error');
+        expect(res.body.error).be.a('string');
+        expect(res.body.error).to.include('no trip found');
+        done();
+      });
+  });
+  
+});

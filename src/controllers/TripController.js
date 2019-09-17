@@ -24,4 +24,20 @@ export default class TripController {
       return resError(res, 500, error.message);
     }
   }
+    /**
+     * @name rejectTripRequest
+     * @description Allows a manager reject a trip request
+     * @param {object} req The request object
+     * @param {object} res The response object
+     * @returns {object} The API response
+     */
+    static async rejectTripRequest(req, res) {
+      try {
+        const { id } = req.params;
+        const data = await TripServices.rejectTripRequest(id);
+        return resSuccess(res, 200, data);
+      } catch (error) {
+        return resError(res, 500, error.message);
+      }
+    }
 }

@@ -20,6 +20,12 @@ export default (sequelize, DataTypes) => {
       allowNull: false,
       type: DataTypes.STRING
     },
+    status: {
+      allowNull: false,
+      type: DataTypes.ENUM,
+      values: ['accepted', 'rejected', 'pending'],
+      defaultValue: 'pending',
+    },
     userId: {
       type: DataTypes.INTEGER,
       references: {
