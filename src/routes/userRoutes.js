@@ -17,12 +17,12 @@ const {
   rememberInfo,
 } = UserController;
 
-const { checkUserExists, checkUserExistBeforeLogin } = UserMiddlewares;
+const { checkUserExists, checkIfUserExist } = UserMiddlewares;
 const { emailValidation, userLoginValidation, rememberInfoValidation } = userValidations;
 const { verifyToken } = Auth;
 
 userRoutes.post('/signup', verifyToken, emailValidation, validationHandler, checkUserExists, createUser);
-userRoutes.post('/signin', userLoginValidation, validationHandler, checkUserExistBeforeLogin, login);
+userRoutes.post('/signin', userLoginValidation, validationHandler, checkIfUserExist, login);
 userRoutes.patch('/remember-info', verifyToken, rememberInfoValidation, validationHandler, rememberInfo);
 
 userRoutes.get('/user/google/signin', getGoogleUrl);

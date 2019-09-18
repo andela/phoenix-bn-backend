@@ -32,10 +32,22 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
+    lineManager: {
+      allowNull: true,
+      type: DataTypes.INTEGER,
+    },
     phoneNumber: {
       allowNull: true,
       type: DataTypes.STRING
-    }
-  });
+    },
+  }, {});
+  User.associate = (models) => {
+    User.hasMany(models.Request, {
+      foreignKey: 'userId',
+      as: 'requests',
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE'
+    });
+  };
   return User;
 };

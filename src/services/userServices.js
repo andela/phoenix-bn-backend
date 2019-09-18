@@ -38,4 +38,15 @@ export default class UserServices {
     const data = await models.User.update({ rememberInfo }, { where: { id } });
     if (data[0] === 0) throw new Error('could not update user field');
   }
+
+  /**
+   * @name GetUserById
+   * @description Interacts with model to find a single user
+   * @param { string } id the user's id
+   * @returns {object} return the user's data
+   */
+  static async getUserById(id) {
+    const userDetails = await models.User.findOne({ where: { id, } });
+    return userDetails;
+  }
 }

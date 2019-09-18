@@ -27,14 +27,14 @@ export default class UserMiddlewares {
   }
 
   /**
- * @name checkUserExistBeforeLogin
+ * @name checkIfUserExist
  * @description Checks if a user exists in the database
  * @param {object} req The request object
  * @param {object} res The response object
  * @param {object} next The response object
  * @returns {object} The API response or next()
  */
-  static async checkUserExistBeforeLogin(req, res, next) {
+  static async checkIfUserExist(req, res, next) {
     try {
       const { email } = req.body;
       const data = await userServices.getUserByEmail(email);
